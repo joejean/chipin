@@ -16,3 +16,4 @@ chip in to order food. Thanks to this service our users avoid high delivery fees
 
 ###Important Resources
 	1. [Javascript Style Guide](https://github.com/airbnb/javascript)
+	2. [Postgres client for node.](https://github.com/brianc/node-postgres)
