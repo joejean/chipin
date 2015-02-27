@@ -1,0 +1,8 @@
+#!/bin/sh
+ssh app@188.166.13.56 <<EOF
+	cd ~/chipin
+	git pull
+	npm install --production
+	forever restartall
+	exit
+EOF
