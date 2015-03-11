@@ -1,38 +1,51 @@
-passport = require('passport-oauth');
+var passport = require('passport');
+//var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var NYUPassportStrategy = require('passport-nyu').Strategy;
 var express = require('express');
 var router = express.Router();
 
 
-passport.use(new OAuth2Strategy({
-    authorizationURL: 'http://passport.sg.nyuad.org/visa/oauth/authorize',
-    tokenURL: 'http://passport.sg.nyuad.org/visa/oauth/token',
+passport.use(new NYUPassportStrategy({
     clientID: "dorSh6I5oN3Mayb5God8Qu",
     clientSecret: "Oj3Al8yad8Baf3jaf9Ej9A",
-    callbackURL: "http://localhost:3000/auth/nyu/callback"
+    callbackURL: "http://127.0.0.1:3000/auth/nyu/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOrCreate({ exampleId: profile.id }, function (err, user) {
+    User.findOrCreate({ netID: profile.netID }, function (err, user) {
       return done(err, user);
     });
   }
 ));
 
+/*router.get('/auth/nyu',
+  passport.authenticate('nyu-passport'),
+  function(req, res){
+    // The request will be redirected to AngelList for authentication, so
+    // this function will not be called.
+  });
 
-
-
-routher.get('/auth/nyu',
-  passport.authenticate('oauth2'));
-
-router.get('/auth/nyu/callback',
-  passport.authenticate('oauth2', { failureRedirect: '/login' }),
+router.get('/auth/nyu/callback', 
+  passport.authenticate('nyu-passport', { failureRedirect: '/login' }),
   function(req, res) {
     // Successful authentication, redirect home.
     res.redirect('/');
   });
+*/
+// passport.use(new OAuth2Strategy({
+//     authorizationURL: 'http://passport.sg.nyuad.org/visa/oauth/authorize',
+//     tokenURL: 'http://passport.sg.nyuad.org/visa/oauth/token',
+//     clientID: "dorSh6I5oN3Mayb5God8Qu",
+//     clientSecret: "Oj3Al8yad8Baf3jaf9Ej9A",
+//     callbackURL: "http://localhost:3000/auth/nyu/callback"
+//   },
+//   function(accessToken, refreshToken, profile, done) {
+//     // User.findOrCreate({ exampleId: profile.id }, function (err, user) {
+//     //   return done(err, user);
+//     // });
+//     return done(err, user);
+//   }
+// ));
 
-/* GET login page. */
-router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Chipin' });
-});
+
 
 module.exports = router;
