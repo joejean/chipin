@@ -4,6 +4,7 @@ var passport = require('passport');
 
 //var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var NYUPassportStrategy = require('passport-nyu').Strategy;
+var User = require("../models/user");
 
 
 
@@ -14,9 +15,9 @@ passport.use('nyu-passport',new NYUPassportStrategy({
   },
   function(accessToken, refreshToken, profile, done) {
 
-    // User.findOrCreate({ netID: profile.netID }, function (err, user) {
-    //   return done(err, user);
-    // });
+    User.findOrCreate({ netID: profile.netID }, function (err, user) {
+      return done(err, user);
+    });
 	
 	return done(profile.netID);
   }
