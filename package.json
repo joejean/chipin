@@ -12,12 +12,12 @@
     "debug": "~2.1.1",
     "express": "~4.11.1",
     "jade": "~1.9.1",
+    "mongoose": "^3.8.25",
     "morgan": "~1.5.1",
     "nconf": "^0.7.1",
     "passport": "^0.2.1",
     "passport-nyu": "^0.1.2",
     "passport-oauth": "^1.0.0",
-    "pg": "^4.2.0",
     "serve-favicon": "~2.2.0"
   },
   "devDependencies": {
