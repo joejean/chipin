@@ -8,9 +8,14 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
+var nunjucks = require("nunjucks");
 
 var app = express();
+nunjucks.configure("views", {
+    autoescape: true,
+    express: app 
 
+});
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');

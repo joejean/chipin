@@ -1,13 +1,10 @@
 var mongoose = require('mongoose');
-mongoose.connect("mongodb://localhost/test");
+mongoose.connect("mongodb://localhost/chipin");
 var db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error:"));
 db.once("open", function(callback){
   console.log("Hi there");
 });
-
-c
-
 
 // // string query for create database
 // var createQuery = ["campaign( campaignID  integer PRIMARY KEY ,restaurant  integer, startTime timestamp, endTime timestamp ,deliveryTime timestamp, currentStatus integer);",

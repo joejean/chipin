@@ -2,6 +2,7 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
+
 //var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
 var NYUPassportStrategy = require('passport-nyu').Strategy;
 var User = require("../models/user");
