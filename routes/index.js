@@ -1,59 +1,73 @@
+var passport = require('passport');
+var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+//var NYUPassportStrategy = require('passport-nyu').Strategy;
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
-
-
-//var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
-var NYUPassportStrategy = require('passport-nyu').Strategy;
 var User = require("../models/user");
+var config = require("../config");
 
-
-
-passport.use('nyu-passport',new NYUPassportStrategy({
-    clientID: "dorSh6I5oN3Mayb5God8Qu",
-    clientSecret: "Oj3Al8yad8Baf3jaf9Ej9A",
-    callbackURL: "http://localhost:3000/auth/nyu/callback"
+//Passport Strategy Configuration
+passport.use(new OAuth2Strategy({
+    authorizationURL: config.oauth.authorizationURL,
+    tokenURL: config.oauth.tokenURL,
+    clientID: config.oauth.clientID,
+    clientSecret: config.oauth.clientSecret,
+    callbackURL: "http://127.0.0.1:3000/login/callback",
+    scope:['netID', 'school', 'class', "name"],
+    profileFields: ['netID', 'school', 'class', "name"]
   },
   function(accessToken, refreshToken, profile, done) {
-
-    User.findOrCreate({ netID: profile.netID }, function (err, user) {
-      return done(err, user);
+    User.findOne({ netID: profile.netID },
+      function (err, user) {
+      if(err){
+        return done(err);
+      }
+      if(!user){
+        user = new User({netID: profile.netID, name: profile.name});
+        user.save(function(err){
+          if(err) console.log(err);
+          return done(err,user);
+        });
+      }
+      else{
+        return done(err, user);
+      }
+      
     });
-	
-	return done(profile.netID);
   }
 ));
 
-/*passport.use('nyu-passport',new OAuth2Strategy({
-    authorizationURL: 'http://passport.sg.nyuad.org/visa/oauth/authorize',
-    tokenURL: 'http://passport.sg.nyuad.org/visa/oauth/token',
-    clientID: "dorSh6I5oN3Mayb5God8Qu",
-    clientSecret: "Oj3Al8yad8Baf3jaf9Ej9A",
-    callbackURL: "http://localhost:3000/auth/nyu/callback"
-  },
-  function(accessToken, refreshToken, profile, done) {
-    // User.findOrCreate({ exampleId: profile.id }, function (err, user) {
-    //   return done(err, user);
-    // });
-	
-    return done(profile);
-  }
-));*/
 
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('index', { title: 'Chipin' });
-});
-router.get('/test', function(req, res, next) {
-  res.send('test');
+router.get("/", function(req, res, next){
+  res.render("index.html");
 });
 
-router.get('/auth/nyu',
-  passport.authenticate('nyu-passport'));
+router.get('/loginSuccess',function(req, res){
 
-router.get('/auth/nyu/callback', 
-  passport.authenticate('nyu-passport', { successRedirect: '/', failureRedirect: '/login' }));
+    res.send("Logged Successfuly");
+  });
+
+router.get('/login',
+  passport.authenticate('oauth2', {scope:['netID', 'school', 'class', 'name'] }),
+  function(req, res){
+    // this function will not be called.
+  });
+
+router.get('/logout',function(req, res){
+   req.logout();
+   res.redirect("http://passport.sg.nyuad.org/auth/logout");
+  });
+
+
+router.get('/login/callback', 
+
+  passport.authenticate('oauth2', { failureRedirect: '/login' }),
+  function(req, res) {
+
+    //Successful authentication, redirect home.
+    res.redirect("/loginSuccess");
+  });
 
 
 

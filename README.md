@@ -14,6 +14,8 @@ chip in to order food. Thanks to this service our users avoid high delivery fees
 	it with the development branch.
 	7. Write tests for your new features. We use the testing framework [mocha](https://github.com/airbnb/javascript)
 
+	**FOR SECURITY REASONS THE FILE `config.js` was not put on GITHUB. You will need to add it to the cloned repo before you can run the site.
+
 ###Important Resources
 	1. [Javascript Style Guide](https://github.com/airbnb/javascript)
 	2. [Postgres client for node.](https://github.com/brianc/node-postgres)
