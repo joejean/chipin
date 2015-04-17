@@ -48,6 +48,38 @@ app.use(passport.session());
 app.use('/', index);
 
 
+//Passport Strategy Configuration
+passport.use(new OAuth2Strategy({
+    authorizationURL: config.oauth.authorizationURL,
+    tokenURL: config.oauth.tokenURL,
+    clientID: config.oauth.clientID,
+    clientSecret: config.oauth.clientSecret,
+    callbackURL: "http://127.0.0.1:3000/login/callback",
+    scope:['netID', 'school', 'class', "name"],
+    profileFields: ['netID', 'school', 'class', "name"]
+  },
+  function(accessToken, refreshToken, profile, done) {
+    User.findOne({ netID: profile.netID },
+      function (err, user) {
+      if(err){
+        return done(err);
+      }
+      if(!user){
+        user = new User({netID: profile.netID, name: profile.name});
+        user.save(function(err){
+          if(err) console.log(err);
+          return done(err,user);
+        });
+      }
+      else{
+        return done(err, user);
+      }
+      
+    });
+  }
+));
+
+
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
