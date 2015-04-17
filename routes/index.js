@@ -9,7 +9,7 @@ var config = require("../config");
 
 
 router.get("/", function(req, res, next){
-  res.render("index.html");
+  res.render("signup.html", {"title":"Sign Up"});
 });
 
 router.get('/loginSuccess',function(req, res){
