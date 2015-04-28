@@ -9,8 +9,27 @@ var config = require("../config");
 
 
 router.get("/", function(req, res, next){
-  res.render("login.html", {"title":"Sign Up"});
+  res.render("home.html", {"title":"Home"});
 });
+
+router.get("/participantHome", function(req, res, next){
+  res.render("participant_home.html", {"title":"Home"});
+});
+
+
+router.get("/confirmation", function(req, res, next){
+  res.render("confirmation.html", {"title":"Confirmation"});
+});
+
+router.get("/signup", function(req, res, next){
+  res.render("signup.html", {"title":"Signup"});
+});
+
+router.get("/menu", function(req, res, next){
+  res.render("menu.html", {"title":"Menu"});
+});
+
+
 
 router.get('/loginSuccess',function(req, res){
 
