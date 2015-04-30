@@ -9,6 +9,7 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var login = require('./routes/login');
 var nunjucks = require("nunjucks");
+var api = require("./routes/api");
 
 var app = express();
 nunjucks.configure("views", {
@@ -16,6 +17,9 @@ nunjucks.configure("views", {
     express: app 
 
 });
+
+console.log("at app.js");
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
@@ -34,6 +38,8 @@ app.use('/login', login);
 app.use('/auth/nyu', login);
 app.use('/auth/nyu/callback',login);
 app.use('/test', routes);
+
+app.use('/api', api);
 
 
 // catch 404 and forward to error handler
