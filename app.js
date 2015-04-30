@@ -6,12 +6,13 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var passport = require("passport");
-var OAuth2Strategy = require('passport-oauth').OAuth2Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 var expressSession = require("express-session");
 var nunjucks = require("nunjucks");
 var User = require("./models/user");
 var config = require("./config");
 var index = require('./routes/index');
+
 
 var app = express();
 
@@ -28,10 +29,8 @@ nunjucks.configure("views", {
 mongoose.connect(config.db.uri);
 
 
-
-
 // uncomment after placing your favicon in /public
-//app.use(favicon(__dirname + '/public/favicon.ico'));
+app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
@@ -48,24 +47,22 @@ app.use(passport.session());
 app.use('/', index);
 
 
-//Passport Strategy Configuration
-passport.use(new OAuth2Strategy({
-    authorizationURL: config.oauth.authorizationURL,
-    tokenURL: config.oauth.tokenURL,
-    clientID: config.oauth.clientID,
-    clientSecret: config.oauth.clientSecret,
-    callbackURL: "http://127.0.0.1:3000/login/callback",
-    scope:['netID', 'school', 'class', "name"],
-    profileFields: ['netID', 'school', 'class', "name"]
+//Google Oauth Config
+passport.use(new GoogleStrategy({
+    clientID: config.google.clientID,
+    clientSecret: config.google.clientSecret,
+    callbackURL: "http://localhost:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    User.findOne({ netID: profile.netID },
+    var netID = (profile.emails[0].value).split('@')[0];
+    User.findOne({ netID: netID, name: profile.displayName},
       function (err, user) {
       if(err){
         return done(err);
       }
       if(!user){
-        user = new User({netID: profile.netID, name: profile.name});
+
+        user = new User({netID: netID, name: profile.displayName});
         user.save(function(err){
           if(err) console.log(err);
           return done(err,user);
@@ -79,16 +76,14 @@ passport.use(new OAuth2Strategy({
   }
 ));
 
-
 passport.serializeUser(function(user, done) {
   done(null, user.id);
 });
 
 passport.deserializeUser(function(id, done) {
-    User.findById(id, function(err, user){
-       done(err, user); 
-    });
-  
+  User.findById(id, function(err, user) {
+    done(err, user);
+  });
 });
 
 
@@ -106,7 +101,7 @@ app.use(function(req, res, next) {
 if (app.get('env') === 'development') {
     app.use(function(err, req, res, next) {
         res.status(err.status || 500);
-        res.render('error', {
+        res.render('error.html', {
             message: err.message,
             error: err
         });
@@ -117,7 +112,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
     res.status(err.status || 500);
-    res.render('error', {
+    res.render('error.html', {
         message: err.message,
         error: {}
     });
