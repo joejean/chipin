@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+
+	<div class="row">
+		<div class="col-md-10 col-md-offset-1">
+			<h1 class="text-center"> <strong>Menu</strong></h1><br>
+
+		 	<div class="col-md-7">
+		 		<div class="well well-lg">
+		 			<table class="table table-condensed">
+  					<tr>
+  						<th>Price</th>
+  						<th>Name</th>
+  						<th>Quantity</th>
+  					</tr>
+  					<tr>
+  						<td>12</td>
+  						<td>Pizza</td>
+  						<td class="col-md-3">
+  							<div class="input-group">
+							    <span class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-sm" data-value="-1" data-target="#spinner2" data-toggle="spinner">
+							            <span class="glyphicon glyphicon-minus"></span>
+							        </button>
+							    </span>
+							    <input type="text" data-ride="spinner" id="spinner2" class="form-control input-number input-sm" value="0" data-min="0">
+							    <span class="input-group-btn">
+							        <button type="button" class="btn btn-default btn-sm" data-value="1" data-target="#spinner2" data-toggle="spinner" data-on="mousehold">
+							            <span class="glyphicon glyphicon-plus"></span>
+							        </button>
+							    </span>
+							</div>
+  						</td>
+
+  					</tr>
+					</table>
+
+		 		</div>
+		 	</div>
+
+		 	<div class="col-md-5">
+		 		<div class="well well-lg">
+		 			<p> <strong>Your order </strong></p>
+		 			<ul class="list-unstyled">
+		 			<li>2 Chicken and Rice <span class="pull-right">50</span></li>
+		 			</ul>
+		 			
+		 			<hr>
+		 			<strong>Total <span class="pull-right">50</span></strong>
+		 			</p>
+
+		 		</div>
+		 	</div>
+			
+		</div>
+
+	</div>
+
+	<div class="row">
+		<div class="col-md-2 col-md-offset-5">
+
+			<a class="btn btn-primary btn-lg" href="">Submit</a>
+		
+		</div>
+	</div>
+
+</div>
+
+
+{% endblock %}
