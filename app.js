@@ -12,6 +12,7 @@ var nunjucks = require("nunjucks");
 var User = require("./models/user");
 var config = require("./config");
 var index = require('./routes/index');
+var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
 
 
 var app = express();
@@ -43,7 +44,7 @@ app.use(expressSession( {
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
-
+app.use(attachAuthenticationStatus);
 app.use('/', index);
 
 

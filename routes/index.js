@@ -2,6 +2,7 @@ var passport = require('passport');
 var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
+var requireAuth = require("../middlewares/requireAuth");
 var config = require("../config");
 
 
@@ -11,7 +12,7 @@ router.get("/", function(req, res, next){
   res.render("home.html", {"title":"Home"});
 });
 
-router.get("/participantHome", function(req, res, next){
+router.get("/participantHome", requireAuth, function(req, res, next){
   res.render("participant_home.html", {"title":"Home"});
 });
 
@@ -28,11 +29,9 @@ router.get("/menu", function(req, res, next){
   res.render("menu.html", {"title":"Menu"});
 });
 
+router.get('/login',function(req, res){
 
-
-router.get('/loginSuccess',function(req, res){
-
-    res.send("Logged Successfuly");
+    res.redirect("/auth/google");
   });
 
 router.get('/auth/google',
@@ -43,17 +42,17 @@ router.get('/auth/google',
 
 router.get('/auth/google/callback', 
 
-  passport.authenticate('google', {successRedirect:'/loginSuccess', failureRedirect: '/login'})
-  );
+  passport.authenticate('google', {failureRedirect: '/login'}), function(req, res){
+      var redirectTo = req.session.returnTo || '/';
+      delete req.session.returnTo;
+      res.redirect(redirectTo);
+  });
 
 
 router.get('/logout',function(req, res){
    req.logout();
    res.redirect("/");
   });
-
-
-
 
 
 
