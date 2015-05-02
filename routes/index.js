@@ -12,6 +12,10 @@ router.get("/", function(req, res, next){
   res.render("home.html", {"title":"Home"});
 });
 
+router.get("/contact", function(req, res, next){
+  res.render("contact.html", {"title":"Contact US"});
+});
+
 router.get("/participantHome", requireAuth, function(req, res, next){
   res.render("participant_home.html", {"title":"Home"});
 });
@@ -25,7 +29,7 @@ router.get("/signup", function(req, res, next){
   res.render("signup.html", {"title":"Signup"});
 });
 
-router.get("/menu", function(req, res, next){
+router.get("/menu",requireAuth, function(req, res, next){
   res.render("menu.html", {"title":"Menu"});
 });
 
