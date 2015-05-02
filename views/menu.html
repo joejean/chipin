@@ -1,0 +1,77 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+
+	<div class="row" id="menu">
+		<div class="col-md-10 col-md-offset-1">
+			<h1 class="text-center"> <strong>Menu</strong></h1><br>
+
+		 	<div class="col-md-7">
+		 		<div class="well well-lg">
+		 			<table class="table table-condensed table-no-border">
+		 			<thead>
+	  					<tr>
+	  						<th>Price (dhs)</th>
+	  						<th>Name</th>
+	  						<th>Quantity</th>
+	  					</tr>
+  					</thead>
+  					<tbody data-bind="foreach: menuItems">
+	  					<tr>
+	  						<td data-bind="text: price"></td>
+	  						<td data-bind="text: name"></td>
+	  						<td class="col-md-1">
+	  							<input type="number" min="0" data-bind="value: quantity"/>
+	  						</td>
+
+	  					</tr>
+  					</tbody>
+					</table>
+
+		 		</div>
+		 	</div>
+
+		 	<div class="col-md-5">
+		 		<div class="well well-lg">
+		 			<p> <strong>Your order </strong></p>
+		 
+		 			<table class="table-no-border table-condensed table-responsive">
+		 			<thead data-bind="visible: orderTotal()">
+	  					<tr>
+	  						<th>#</th>
+	  						<th>Name</th>
+	  						<th>Price</th>
+	  					</tr>
+  					</thead>
+  					<tbody data-bind="foreach: orderedItems">
+	  					<tr>
+	  						<td class="col-md-2" data-bind="text: quantity"></td>
+	  						<td class="col-md-8" data-bind="text: name"></td>
+	  						<td class="col-md-2" data-bind="text: totalPrice"></td>
+	  					</tr>
+  					</tbody>
+					</table>
+					<hr data-bind="visible: orderTotal()"> 
+					<strong data-bind="visible: orderTotal()">Total <span class="pull-right" data-bind="text: orderTotal()"></span></strong>
+		 		</div>
+		 			
+		 	</div>
+		 </div>
+			
+	</div>
+
+	
+
+	<div class="row">
+		<div class="col-md-2 col-md-offset-6">
+
+			<a class="btn btn-primary btn-lg" href="">Submit</a>
+		
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

@@ -32,9 +32,6 @@ function MenuViewModel() {
 		}
 		return total;
 	});
-	
-
-	// self.oderTotal = ko.computed(function)
 
 }
 
