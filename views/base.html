@@ -8,7 +8,7 @@
     {% block title %}
     <title>{{title}}</title>
     {% endblock %}
-
+    
     <!-- Bootstrap -->
     <link href="/css/custom.bootstrap.min.css" rel="stylesheet">
     <link href="/css/sticky-footer-navbar.css" rel="stylesheet">
@@ -35,13 +35,17 @@
             <span class="icon-bar"></span>
           </button>
           <a class="navbar-brand" href="#">
-          <img alt="Brand" src="/images/logo_5.png" width="100%" height="100%">
+          <img class="img-responsive" alt="Brand" src="/images/logo_5.png" heigt="170%">
           </a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
             <li class="active"><a href="#">Home</a></li>
-            <li><a href="#about">Sign Up/ Login</a></li>
+            {% if isAuthenticated %}
+            <li><a href="/logout">Logout</a></li>
+            {% else %}
+            <li><a href="/login">Login</a></li>
+            {% endif%}
             <li><a href="#contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
@@ -69,6 +73,8 @@
   <script src="/js/ie10-viewport-bug-workaround.js"></script>
   <script src="/js/bootstrap-spinner.min.js"></script>
   <script src="/js/mousehold.min.js"></script>
+  <script src="/js/knockout-3.3.0.js"></script>
+  
   {% endblock %}
 
   </body>
