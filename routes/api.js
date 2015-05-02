@@ -3,7 +3,8 @@ var router = express.Router();
 
 
 var User = require('../models/user');
-var Restaurant = require('../models/restaurant');
+var Restaurant = require('../models/restaurant').restaurantModel;
+var Food = require('../models/restaurant').foodModel;
 var Campaign = require('../models/campaign');
 var Order = require("../models/order");
 var Transaction = require("../models/transaction")

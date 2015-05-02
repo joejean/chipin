@@ -3,6 +3,7 @@ var config = {};
 config.oauth = {};
 config.db = {};
 config.session = {};
+config.google = {};
 
 /*Database*/
 config.db.uri = "mongodb://localhost/chipin";
@@ -14,6 +15,8 @@ config.oauth.clientID = "dorSh6I5oN3Mayb5God8Qu";
 config.oauth.authorizationURL = 'http://passport.sg.nyuad.org/visa/oauth/authorize';
 config.oauth.tokenURL = 'http://passport.sg.nyuad.org/visa/oauth/token';
 config.session.secret = "\xc9\xe7\xfb\xf2\xe9~o\xa1\xe0\xd9\x15\t\xacNe\xe0bI0a6\xd7";
+config.google.clientID = "891538322317-63tvts0nv9q8ugllikm353emhn9n8cav.apps.googleusercontent.com";
+config.google.clientSecret = "obTzQm81YJhVmzpKHH3tjEzZ";
 
 
 module.exports = config;

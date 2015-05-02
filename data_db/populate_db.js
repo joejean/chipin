@@ -5,9 +5,14 @@ var config = require("../config");
 var mongoose = require("mongoose");
 mongoose.connect(config.db.uri);
 
-var Restaurant = require('../models/restaurant');
-var Campaign = require('../models/campaign');
-var Food = require('../models/food');
+var Restaurant = require('../models/restaurant').restaurantModel;
+var Food = require('../models/restaurant').foodModel;
+// var testExport = require('../models/restaurant').testExport;
+
+// console.log(testExport);
+// var newRes = new Restaurant();
+// var newFood = new Food();
+// console.log(newFood);
 
 
 function populateDB (model,d,callback){

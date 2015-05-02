@@ -51,8 +51,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(attachAuthenticationStatus);
-app.use('/', index);
 
+//Our Routes
+app.use('/', index);
+app.use('/api', api);
 
 //Google Oauth Config
 passport.use(new GoogleStrategy({
@@ -93,7 +95,7 @@ passport.deserializeUser(function(id, done) {
   });
 });
 
-app.use('/api', api);
+
 
 
 // catch 404 and forward to error handler

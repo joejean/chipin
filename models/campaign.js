@@ -8,7 +8,6 @@ var campaignSchema = new Schema({
 	endTime: Date,
 	deliveryTime: Date,
 	currentStatus: String
-
 });
 
 module.exports = mongoose.model("Campaign", campaignSchema);
