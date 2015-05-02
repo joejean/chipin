@@ -1,7 +1,17 @@
 var mongoose = require("mongoose");
 Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
+// var Food = require("./food")
 
+
+// duplicate with food.js
+var foodSchema = new Schema({
+	name:String, 
+	price: Number, 
+	type: String, 
+	description: String, 
+	availableTime: String 
+});
 
 var restaurantSchema = new Schema({
 	name: String, 
@@ -10,13 +20,7 @@ var restaurantSchema = new Schema({
 	minimumAmount: Number,
 	waitTime: Number,
 	availableTime: String,
-	foodItems: [{
-		name:String, 
-		price: Number, 
-		type: String, 
-		description: String, 
-		availableTime: String 
-	}]
+	foodItems: [foodSchema]
 
 });
 

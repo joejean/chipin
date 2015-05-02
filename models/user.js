@@ -2,6 +2,7 @@ var mongoose = require("mongoose");
 Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
+
 var userSchema = new Schema({
 
 	userID: String,
@@ -10,7 +11,7 @@ var userSchema = new Schema({
 	phone: String,
 	buildingNo: String,
 	roomNo: Number,
-	account: {accountID:Number, balance: Number}, 
+	accountID: ObjectId,
 	paypalID: String
 	
 });
