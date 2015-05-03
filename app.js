@@ -63,15 +63,15 @@ passport.use(new GoogleStrategy({
     callbackURL: "http://localhost:3000/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    var netID = (profile.emails[0].value).split('@')[0];
-    User.findOne({ netID: netID, name: profile.displayName},
+    //var netID = (profile.emails[0].value).split('@')[0];
+    User.findOne({email: profile.emails[0].value},
       function (err, user) {
       if(err){
         return done(err);
       }
       if(!user){
 
-        user = new User({netID: netID, name: profile.displayName});
+        user = new User({email: profile.emails[0].value, name: profile.displayName});
         user.save(function(err){
           if(err) console.log(err);
           return done(err,user);
@@ -105,7 +105,7 @@ app.use(function(req, res, next) {
     next(err);
 });
 
-// error handlers
+//**** error handlers ****//
 
 // development error handler
 // will print stacktrace
