@@ -3,6 +3,7 @@ var express = require('express');
 var router = express.Router();
 var User = require("../models/user");
 var requireAuth = require("../middlewares/requireAuth");
+var requireUpdatedProfile = require("../middlewares/requireUpdatedProfile");
 var config = require("../config");
 
 
@@ -16,40 +17,46 @@ router.get("/contact", function(req, res, next){
   res.render("contact.html", {"title":"Contact US"});
 });
 
-router.get("/participantHome", requireAuth, function(req, res, next){
+router.get("/participantHome", requireAuth, requireUpdatedProfile, function(req, res, next){
   res.render("participant_home.html", {"title":"Home"});
 });
 
 
-router.get("/confirmation", function(req, res, next){
+router.get("/confirmation", requireAuth, requireUpdatedProfile, function(req, res, next){
   res.render("confirmation.html", {"title":"Confirmation"});
 });
 
-router.get("/signup", function(req, res, next){
-  res.render("signup.html", {"title":"Signup"});
+router.get("/userInfo", function(req, res, next){
+  res.render("userinfo.html", {"title":"User Info"});
 });
 
-router.get("/menu",requireAuth, function(req, res, next){
+router.get("/menu",requireAuth, requireUpdatedProfile, function(req, res, next){
   res.render("menu.html", {"title":"Menu"});
 });
 
+
+
+//*** Route Handlers for Login and Logout****//
 router.get('/login',function(req, res){
 
     res.redirect("/auth/google");
   });
 
 router.get('/auth/google',
-  passport.authenticate('google',{scope: 'https://www.googleapis.com/auth/userinfo.email', hostedDomain:'nyu.edu'}),
+  passport.authenticate('google',{scope:['email', 'profile'],
+   hostedDomain:'nyu.edu', approvalPrompt: 'auto'}),
   function(req, res){
     // this function will not be called.   
   });
 
 router.get('/auth/google/callback', 
 
-  passport.authenticate('google', {failureRedirect: '/login'}), function(req, res){
-      var redirectTo = req.session.returnTo || '/';
-      delete req.session.returnTo;
-      res.redirect(redirectTo);
+  passport.authenticate('google', {failureRedirect: '/login'}), requireUpdatedProfile, function(req, res){
+      
+        var redirectTo = req.session.returnTo || '/';
+        delete req.session.returnTo;
+        res.redirect(redirectTo);
+      
   });
 
 
