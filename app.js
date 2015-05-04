@@ -14,9 +14,15 @@ var User = require("./models/user");
 var config = require("./config");
 var index = require('./routes/index');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
+require('coffee-script/register') // <-- This dependency is to be removed very soon.
+penguin = require('penguin')
+admin = new penguin.Admin()
+
 
 
 var app = express();
+//for Penguin Admin
+admin.setupApp(app);
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
