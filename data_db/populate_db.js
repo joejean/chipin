@@ -7,12 +7,7 @@ mongoose.connect(config.db.uri);
 
 var Restaurant = require('../models/restaurant').restaurantModel;
 var Food = require('../models/restaurant').foodModel;
-// var testExport = require('../models/restaurant').testExport;
 
-// console.log(testExport);
-// var newRes = new Restaurant();
-// var newFood = new Food();
-// console.log(newFood);
 
 
 function populateDB (model,d,callback){

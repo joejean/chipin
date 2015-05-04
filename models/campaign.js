@@ -7,7 +7,8 @@ var campaignSchema = new Schema({
 	startTime: {type: Date, default: Date.now},
 	endTime: Date,
 	deliveryTime: Date,
-	currentStatus: String
+	currentStatus: String,
+	balance: Number
 });
 
 module.exports = mongoose.model("Campaign", campaignSchema);
