@@ -348,8 +348,6 @@ router.post('/order/:accountID/:campaignID/:userID', function(req,res,next){
 
 		}
 	});
-
-
 });
 
 // get all orders from a given campaign id
@@ -411,6 +409,33 @@ router.get('/account/:userID', function (req,res,next){
 });
 
 
+// update user's address
+// body follows:
+// { "userID": xxx,
+//	 "phone": xxx
+//   "buildingNo": xxx
+//   "roomNo": xxx
+// }
+router.post('/updateUserAddress', function (req,res,next){
+
+	var dat = req.body;
+	var update = {};
+	update["phone"] = dat.phone;
+	update["buildingNo"] = dat.buildingNo;
+	update["roomNo"] = dat.roomNo;
+
+	User.findOneAndUpdate({"_id": dat.userID}, update, function (err, data) {
+    if (err) {
+    	console.error(err);
+    	res.json(null);
+    } 
+    else{
+    	console.log(data);
+    	res.json(data);
+    }
+	});
+
+});
 
 
 module.exports = router;
