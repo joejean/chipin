@@ -26,7 +26,7 @@ router.get("/confirmation", requireAuth, requireUpdatedProfile, function(req, re
   res.render("confirmation.html", {"title":"Confirmation"});
 });
 
-router.get("/userInfo", function(req, res, next){
+router.get("/userInfo",requireAuth, function(req, res, next){
   res.render("userinfo.html", {"title":"User Info"});
 });
 
