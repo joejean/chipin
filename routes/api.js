@@ -112,11 +112,11 @@ function makeCampaign(restaurant, endTime){
   console.log(restaurant);
   var deliveryTime = new Date(endTime.getTime() + restaurant.waitTime * 60*1000);
   console.log(deliveryTime);
-  var campaign = new Campaign({ restaurant: restaurant._id, 
+  var campaign = { restaurant: restaurant._id, 
                                 currentStatus: "active",
                                 endTime: endTime,
                                 deliveryTime: deliveryTime,
-                            	balance: 0} );
+                            	balance: 0} ;
 
   return campaign;
 }
@@ -146,6 +146,34 @@ router.get('/restaurant/:name', function(req,res,next){
 
 
 	findOneThisParam(Restaurant,"name",req.params.name, function (err, data) {
+	  if (err) {
+	  	console.error(err);
+	  } 
+	  else{
+	  	console.log("in get rest");
+		console.log(data);
+		try{
+			data.foodItems.forEach( function(d,i,arr){
+				// var thisObj = JSON.parse(d);
+				// console.log(thisObj.name);
+				// data.foodItems[i] =  thisObj;
+				console.log(d);
+			});
+	  	  	res.json(data);
+	  	}
+	  	catch(err){
+	  		res.json([]);
+	  	}
+	  }
+	});
+});
+
+
+// return the restaurant with given name
+router.get('/restaurantByID/:id', function(req,res,next){
+
+
+	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
 	  } 

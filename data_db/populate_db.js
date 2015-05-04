@@ -7,6 +7,7 @@ mongoose.connect(config.db.uri);
 
 var Restaurant = require('../models/restaurant').restaurantModel;
 var Food = require('../models/restaurant').foodModel;
+var Campaign = require('../models/campaign');
 
 
 
@@ -60,6 +61,57 @@ function addForeignData(model, foreignItem, keyParam, valParam, keyUpdate){
   });
 }
 
+
+function makeCampaign(restaurant, endTime){
+  
+  // console.log(restaurant.waitTime);
+  console.log(restaurant);
+  var deliveryTime = new Date(endTime.getTime() + restaurant.waitTime * 60*1000);
+  console.log(deliveryTime);
+  var campaign = { restaurant: restaurant._id, 
+                                currentStatus: "active",
+                                endTime: endTime,
+                                deliveryTime: deliveryTime,
+                              balance: 0};
+
+  return campaign;
+}
+
+
+function makeCampaignFromName(restaurantName,endTime,callback){
+
+  findOneThisParam(Restaurant,"name",restaurantName,function(err,data){
+    if (err){
+      callback(err, null);
+    }
+    else{
+      if (data){
+        callback(null, makeCampaign(data, endTime));
+      }
+      else{
+        callback(null, null);
+      }
+    }
+  });
+}
+
+function createOneToyCampaign(){
+  var endDate = new Date();
+  var myRes = "alkram";
+  var endTime = new Date(endDate.getTime() + 24*60 *60*1000);
+
+
+
+  makeCampaignFromName(myRes,endTime, function(err,dat){
+    populateDB (Campaign,dat,function(err,dat){
+      if(dat){
+        console.log(dat);
+      }
+    });
+
+  });
+
+}
 
 //  DATA //
 
@@ -231,7 +283,7 @@ var foodAll = [
   }
 ];
 
-// populate restaurants
+
 async.forEach(restaurantAll, populateDB.bind(populateDB, Restaurant), function(err){
     if (err) {   
       console.error(err);
@@ -244,10 +296,11 @@ async.forEach(restaurantAll, populateDB.bind(populateDB, Restaurant), function(e
         console.log(myFood);
         addForeignData(Restaurant, myFood, "name", d.restName, "foodItems");
       });
+      createOneToyCampaign();
+
 
     }
 });
-
 
 
 
