@@ -409,22 +409,14 @@ router.get('/account/:userID', function (req,res,next){
 });
 
 
-// update user's address
+// 
 // body follows:
-// { "userID": xxx,
-//	 "phone": xxx
-//   "buildingNo": xxx
-//   "roomNo": xxx
-// }
-router.post('/updateUserAddress', function (req,res,next){
+// schema of user
+router.post('/user', function (req,res,next){
 
 	var dat = req.body;
-	var update = {};
-	update["phone"] = dat.phone;
-	update["buildingNo"] = dat.buildingNo;
-	update["roomNo"] = dat.roomNo;
 
-	User.findOneAndUpdate({"_id": dat.userID}, update, function (err, data) {
+	User.update({"_id": dat._id}, dat,{upsert: true}, function (err, data) {
     if (err) {
     	console.error(err);
     	res.json(null);
@@ -437,5 +429,19 @@ router.post('/updateUserAddress', function (req,res,next){
 
 });
 
+// get user given id
+router.get('/user/:userID', function (req,res,next){
 
+	var givenParam = req.params;
+	var myParam = {_id:givenParam.userID};
+	User.find(myParam, function(err,data){
+		if (err){
+			console.error(err);
+		}
+		else{
+			console.log(data);
+			res.json(data);
+		}
+	});
+});
 module.exports = router;
