@@ -43,7 +43,7 @@ router.get('/login',function(req, res){
   });
 
 router.get('/auth/google',
-  passport.authenticate('google',{scope: 'https://www.googleapis.com/auth/userinfo.email',
+  passport.authenticate('google',{scope:['email', 'profile'],
    hostedDomain:'nyu.edu', approvalPrompt: 'auto'}),
   function(req, res){
     // this function will not be called.   
