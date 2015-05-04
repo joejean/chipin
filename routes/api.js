@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+var async = require('async');
 
 
 var User = require('../models/user');
@@ -16,6 +17,8 @@ var Account = require("../models/account")
 // general create and save - asyn function
 function createAndSave( model, data, callback){
 	var myRecord = new model(data);
+
+	console.log(myRecord);
 	myRecord.save(function(err){
 	    if(err) {
 	    	console.log("error saving");
@@ -112,7 +115,8 @@ function makeCampaign(restaurant, endTime){
   var campaign = new Campaign({ restaurant: restaurant._id, 
                                 currentStatus: "active",
                                 endTime: endTime,
-                                deliveryTime: deliveryTime} );
+                                deliveryTime: deliveryTime,
+                            	balance: 0} );
 
   return campaign;
 }
@@ -181,7 +185,6 @@ router.post('/restaurant', function(req,res,next){
 // get all campaigns from a given restaurant
 router.get('/campaign/:restaurantName', function(req,res,next){
 
-
 	findOneThisParam(Restaurant,"name",req.params.restaurantName, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -193,12 +196,28 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 				console.error(err);
 			}
 			else{
+				console.log("data from given restaturant");
 				console.log(data);
 				res.json(data);
 			}
 		});
 
 	  }
+	});
+});
+
+
+// get all campaigns an active campaign
+router.get('/campaign', function(req,res,next){
+	findThisParam(Campaign,"currentStatus" , "active", function(err,data){
+		if (err){
+			console.error(err);
+		}
+		else{
+			console.log(data);
+
+			res.json(data);
+		}
 	});
 });
 
@@ -209,15 +228,16 @@ router.post('/campaign', function(req,res,next){
 
 	// makeCampaignFromName(restaurantName,endTime,callback){
 	var dat = req.body;
-
-	makeCampaignFromName(dat.restaurantName, dat.endTime, function(err,dat){
+	makeCampaignFromName(dat.restaurantName, new Date(dat.endTime), function(err,dat){
 		if (err){
+			console.error(err);
 			res.json(null);
 		}
 		else{
 			if (dat){
 				createAndSave(Campaign,dat, function(err,campaign){
 					if (err){
+						console.error(err);
 						res.json(null);
 					}
 					else{
@@ -226,11 +246,13 @@ router.post('/campaign', function(req,res,next){
 				});
 			}
 			else{
+				console.error(err);
 				res.json(null);
 			}
 		}
 	});
 });
+
 
 // get all transactions from a given campaign
 router.get('/transaction/:campaignID', function (req,res,next){
@@ -255,6 +277,7 @@ router.get('/transaction/:campaignID', function (req,res,next){
 });
 
 // put transaction in database - format assumed 
+//
 router.post('/transaction', function(req,res,next){
 	var dat = req.body;
 	createAndSave(Transaction,dat, function(err,transaction){
@@ -267,16 +290,62 @@ router.post('/transaction', function(req,res,next){
 	});
 });
 
-// put order in database -  format assumed 
-router.post('/order', function(req,res,next){
+// put LIST of orders in database -
+// body has the format
+// [ {food: foodObject, quantity: Y1},{ foodID: foodObj, quantity: Y2}]
+router.post('/order/:accountID/:campaignID/:userID', function(req,res,next){
 
-	var dat = req.body;
-	createAndSave(Order,dat, function(err,order){
+	var givenParam = req.params;
+	console.log(givenParam);
+
+	var transactionData = {};
+	transactionData["time"] = new Date();
+	transactionData["accountID"] = givenParam.accountID;
+	transactionData["type"] = "cash credit";
+	
+	var thisAccountID = givenParam.accountID
+	var thisCampaignID = givenParam.campaignID;
+	var thisUserID = givenParam.userID;
+
+	var orderBalance = 0;
+	createAndSave(Transaction,transactionData, function(err,transaction){
 		if (err){
-			res.json([]);
+			res.json(null);
 		}
 		else{
-			res.json(order);
+
+			var thisTransactionID = transaction._id;
+			var dat = req.body;
+			if (dat.constructor !== Array){
+				dat = [dat];
+			}
+
+			// making order object
+			var orderData = dat.map(function(d,i){
+				var orderObj = {};
+				orderObj["transactionID"] = thisTransactionID;
+				orderObj["campaignID"] = thisCampaignID;
+				orderObj["userID"] = thisUserID;
+				orderObj["foodID"] = d.food._id;
+				orderObj["quantity"] = d.quantity;
+				orderBalance += d.quantity* d.food.price;
+				return orderObj;
+			});
+
+			//async create and save
+			async.forEach(dat, createAndSave.bind(createAndSave, Order), function(err){
+			    if (err) {
+			    	console.error(err);
+			    	res.json(null);
+			    } else {
+
+			    	Campaign.findOneAndUpdate({"_id":thisCampaignID}, {$inc: {"balance": orderBalance}}, function (err, data) {
+			    		res.json(data);
+			    	});
+
+			    }
+			});
+
 		}
 	});
 });
@@ -338,5 +407,35 @@ router.get('/account/:userID', function (req,res,next){
 		}
 	});
 });
+
+
+// update user's address
+// body follows:
+// { "userID": xxx,
+//	 "phone": xxx
+//   "buildingNo": xxx
+//   "roomNo": xxx
+// }
+router.post('/updateUserAddress', function (req,res,next){
+
+	var dat = req.body;
+	var update = {};
+	update["phone"] = dat.phone;
+	update["buildingNo"] = dat.buildingNo;
+	update["roomNo"] = dat.roomNo;
+
+	User.findOneAndUpdate({"_id": dat.userID}, update, function (err, data) {
+    if (err) {
+    	console.error(err);
+    	res.json(null);
+    } 
+    else{
+    	console.log(data);
+    	res.json(data);
+    }
+	});
+
+});
+
 
 module.exports = router;
