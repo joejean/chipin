@@ -69,12 +69,13 @@ router.post('/account', function(req,res,next){
 router.get('/account/:userID', function (req,res,next){
 });
 
-// update user's address
+
+
 // body follows:
-// { "userID": xxx,
-//	 "phone": xxx
-//   "buildingNo": xxx
-//   "roomNo": xxx
-// }
-router.post('/updateUserAddress', function (req,res,next){
+// schema of user
+router.post('/user', function (req,res,next){
+});
+
+// get user given id
+router.get('/user/:userID', function (req,res,next){
 });
