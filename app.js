@@ -13,27 +13,36 @@ var api = require("./routes/api");
 var User = require("./models/user");
 var config = require("./config");
 var index = require('./routes/index');
+var nunjucksDate = require('nunjucks-date');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
 require('coffee-script/register') // <-- This dependency is to be removed very soon.
 penguin = require('penguin')
-admin = new penguin.Admin()
 
 
 
+ 
 var app = express();
 //for Penguin Admin
-admin.setupApp(app);
+//admin = new penguin.Admin()
+//admin.setupApp(app);
 
-// view engine setup
+// view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'nunjucks');
 nunjucks.configure("views", {
     autoescape: true,
-    express: app 
-
 });
 
-console.log("at app.js");
+nunjucksDate.setDefaultFormat('MMMM Do YYYY, h:mm:ss a');
+var env = new nunjucks.Environment();
+env.addFilter('stringify', function(obj) {
+    return JSON.stringify(obj);
+});
+nunjucksDate.install(env);
+//Tie nunjucks to express using the new env
+env.express(app);
+
+
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

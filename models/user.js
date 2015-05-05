@@ -4,14 +4,13 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 
 var userSchema = new Schema({
-
-	userID: String,
+    
 	email: String,
 	name: String,
 	phone: String,
 	buildingNo: String,
 	roomNo: Number,
-	accountID: ObjectId,
+	//accountID: ObjectId,
 	paypalID: String
 	
 });
