@@ -172,7 +172,6 @@ router.get('/restaurant/:name', function(req,res,next){
 // return the restaurant with given name
 router.get('/restaurantByID/:id', function(req,res,next){
 
-
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -212,6 +211,7 @@ router.post('/restaurant', function(req,res,next){
 
 // get all campaigns from a given restaurant
 router.get('/campaign/:restaurantName', function(req,res,next){
+
 
 	findOneThisParam(Restaurant,"name",req.params.restaurantName, function (err, data) {
 	  if (err) {

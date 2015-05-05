@@ -6,6 +6,7 @@
 router.get('/restaurant/:name', function(req,res,next){
 });
 
+
 // put restaurant in database - the function does not check whether it comes
 // in the right format
 router.post('/restaurant', function(req,res,next){
