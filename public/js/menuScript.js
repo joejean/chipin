@@ -1,6 +1,7 @@
 //Class to represent a menu item
-function MenuItem(name, price){
+function MenuItem(name, price, foodID){
 	var self = this;
+	self._id = foodID;
 	self.name = name;
 	self.price = price;
 	self.quantity= ko.observable(0);
@@ -11,48 +12,12 @@ function MenuItem(name, price){
 }
 
 
-
-//Class to represent a User Object
-function User(userID, netID, name) {
-
-	var self = this;
-	self.userID = ko.observable(userID);
-	self.netID = ko.observable(netID);
-	self.name = ko.observable(name);
-	self.phone = ko.observable('');
-	self.buildingNo = ko.observable('');
-	self.roomNo = ko.observable('');
-
-}
-
-//ViewModel for the user information page 
-function UserViewModel(){
-	var self = this;
-	self.user = ko.observable();
-
-	self.save = function(){
-		//TODO: modify this and add the correct endpoint
-		$.ajax("/user", {
-			data: ko.toJSON({user: self.user}),
-			type: "post", 
-			contentType: "application/json",
-			//TODO: Modify this to redirect the user to home on a successful submission
-			success: function(result){ alert(result)}
-
-		});
-	};
-
-}
-
 //ViewModel for the menu page and initial state
 function MenuViewModel() {
 
 	var self = this;
-	self.menuItems = ko.observableArray([
-		new MenuItem("Test", 34),
-		new MenuItem("Test2", 45),
-		new MenuItem("Test3", 54)
-	]);
+
+	self.menuItems = ko.observableArray([]);
 
 	self.orderedItems = ko.computed(function(){
 		return ko.utils.arrayFilter( self.menuItems(), function(menuItem){ return menuItem.quantity() > 0});
@@ -68,15 +33,19 @@ function MenuViewModel() {
 
 	self.save = function(){
 		//TODO: modify this and add the correct endpoint
-		$.ajax("/orders", { 
-
+		var url = "http://localhost:3000/api/order/"+campaignID+"/"+userID;
+		$.ajax(url, { 
 			data: ko.toJSON({order: self.orderedItems}),
 			type: 'post',
 			contentType: 'application/json', 
 			//TODO: Modify this to do something more meaningful upon successful post request
-			success: function(result){ alert(result)}
+			success: function(result){ window.location = "/confirmation";}
 		});
 	};
+
+	var mappedData = $.map(foodItems, function(item){ return new MenuItem(item.name, item.price, item._id)});
+	self.menuItems(mappedData);
+
 	//Load Initial Data to the menuItems
 	/*$.getJSON("/campaign", function(data){
 		var mappedData = $.map(data, function(item){ return new menuItem(item)});

@@ -5,12 +5,54 @@ var User = require("../models/user");
 var requireAuth = require("../middlewares/requireAuth");
 var requireUpdatedProfile = require("../middlewares/requireUpdatedProfile");
 var config = require("../config");
+var async = require('async');
+var request = require('request');
+
+
 
 
 
 
 router.get("/", function(req, res, next){
-  res.render("home.html", {"title":"Home"});
+  var campaign;
+  var restaurant;
+  async.waterfall([
+
+    function(callback){
+      var url = "http://localhost:3000/api/campaign";
+      console.log("calling campaign");
+      request(url, function(err, response, body) {
+        // JSON body
+        //if(err) { console.log(err);callback(true); return; }
+        campaign = JSON.parse(body)[0];
+        callback(null, campaign.restaurant);
+        
+      });
+      
+    },
+    function(restaurant, callback){
+      console.log(restaurant);
+      var url = "http://localhost:3000/api/restaurantByID/"+restaurant;
+      console.log("calling restaurant");
+      request(url, function(err, response, body) {
+        // JSON body
+        if(err) { console.log(err); callback(true); return; }
+        restaurant = JSON.parse(body);
+        console.log("logging Restaurant"+ restaurant.name);
+        callback(null, restaurant);
+      });
+      
+       
+    }
+  ],
+  function (err, result) {
+    //console.log(result);
+   if(err) { console.log(err); res.send(500,"Server Error"); return; }
+
+   res.render("home.html", {"title":"Home", "campaign": campaign, "restaurant": result});   
+  });
+
+  
 });
 
 router.get("/contact", function(req, res, next){
@@ -23,15 +65,72 @@ router.get("/participantHome", requireAuth, requireUpdatedProfile, function(req,
 
 
 router.get("/confirmation", requireAuth, requireUpdatedProfile, function(req, res, next){
-  res.render("confirmation.html", {"title":"Confirmation"});
+
+   var url = "http://localhost:3000/api/campaign"
+      request(url, function(err, response, body) {
+        // JSON body
+        if(err) { console.log(err); callback(true); return; }
+        var campaign = JSON.parse(body)[0];
+        res.render("confirmation.html", {"title":"Confirmation", "campaign": campaign});
+      });
 });
 
-router.get("/userInfo", function(req, res, next){
+router.get("/userInfo",requireAuth, function(req, res, next){
   res.render("userinfo.html", {"title":"User Info"});
 });
 
-router.get("/menu",requireAuth, requireUpdatedProfile, function(req, res, next){
-  res.render("menu.html", {"title":"Menu"});
+router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(req, res, next){
+  var restaurantID = req.params.restaurantID;
+ 
+ /* var url = "http://localhost:3000/api/restaurantByID/"+restaurantID;
+      request(url, function(err, response, body) {
+        // JSON body
+        if(err) { console.log(err); callback(true); return; }
+        var restaurant = JSON.parse(body);
+        res.render("menu.html", {"title":"Menu", "restaurant": restaurant});
+      });
+  */
+
+  var campaign;
+  var restaurant;
+  async.waterfall([
+
+    function(callback){
+      var url = "http://localhost:3000/api/campaign";
+      console.log("calling campaign");
+      request(url, function(err, response, body) {
+        // JSON body
+        //if(err) { console.log(err);callback(true); return; }
+        campaign = JSON.parse(body)[0];
+        callback(null, campaign.restaurant);
+        
+      });
+      
+    },
+    function(restaurant, callback){
+      console.log(restaurant);
+      var url = "http://localhost:3000/api/restaurantByID/"+restaurantID;
+      console.log("calling restaurant");
+      request(url, function(err, response, body) {
+        // JSON body
+        if(err) { console.log(err); callback(true); return; }
+        restaurant = JSON.parse(body);
+        console.log("logging Restaurant"+ restaurant.name);
+        callback(null, restaurant);
+      });
+      
+       
+    }
+  ],
+  function (err, result) {
+    //console.log(result);
+   if(err) { console.log(err); res.send(500,"Server Error"); return; }
+
+   res.render("menu.html", {"title":"Menu", "campaign": campaign, "restaurant": result});   
+  });
+
+
+  
 });
 
 

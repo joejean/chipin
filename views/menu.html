@@ -59,6 +59,15 @@
 		 			
 		 	</div>
 		 </div>
+
+		<div class="row">
+		<div class="col-md-2 col-md-offset-6">
+
+			<button data-bind="click: save" type="submit" class="btn btn-primary">Submit</button>
+		
+		</div>
+	</div>
+
 			
 	</div>
 
@@ -67,11 +76,26 @@
 	<div class="row">
 		<div class="col-md-2 col-md-offset-6">
 
-			<a class="btn btn-primary btn-lg" href="">Submit</a>
+			<button data-bind="click: save" type="submit" class="btn btn-primary">Submit</button>
 		
 		</div>
 	</div>
 
 </div>
+
+{% endblock %}
+
+{% block footer %}
+
+  {{super()}}
+  <script>
+  	var foodItems=JSON.parse('{{restaurant.foodItems|stringify}}');
+  	var userID = "{{user._id}}";
+  	var campaignID = "{{campaign._id}}";
+
+  </script>
+
+  <script src="/js/menuScript.js">
+  </script>
 
 {% endblock %}

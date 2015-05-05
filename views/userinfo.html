@@ -8,33 +8,25 @@
           <form>
             <div class="form-group">
               <label for="exampleInputPassword1">Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Name" value="{{user.name}}" disabled>
+              <input data-bind="value: name" type="text" class="form-control" id="name" placeholder="Name" value="" disabled>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Email address</label>
-              <input type="email" class="form-control" id="email" placeholder="email" value="{{user.email}}" disabled>
+              <input data-bind="value: email" type="text" class="form-control" id="email" placeholder="email" value="" disabled>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Phone #</label>
-              <input type="number" class="form-control" id="phone" placeholder="phone #" required>
+              <input data-bind="value: phone" type="number" class="form-control" id="phone" placeholder="phone #" required>
             </div>
             <div class="form-group">
               <label for="exampleInputPassword1">Building #</label>
-              <select class="form-control" required>
-                <option>A5-A</option>
-                <option>A5-B</option>
-                <option>A5-C</option>
-                <option>A2-A</option>
-                <option>A2-B</option>
-                <option>A2-C</option>
-                <option>A6-A</option>
-                <option>A6-B</option>
-                <option>A6-C</option>
+              <select data-bind="options: buildingNo, value: selectedBuildingNo" class="form-control" required>
+                <!-- <option data-bind="value: data"></option> -->
               </select>
             </div>
             <div class="form-group">
               <label for="exampleInputEmail1">Room #</label>
-              <input type="text" class="form-control" id="room" placeholder="room #" required>
+              <input data-bind="value: roomNo" type="text" class="form-control" id="room" placeholder="room #" required>
             </div>
             <button data-bind="click: save" type="submit" class="btn btn-primary">Submit</button>
           </form>
@@ -42,5 +34,18 @@
         </div>
       
     </div>
+
+{% endblock %}
+
+{% block footer %}
+
+  {{super()}}
+  <!-- pass those variables to the script-->
+  <script>
+  var userID = "{{user._id}}";
+  var userName = "{{user.name}}";
+  var userEmail = "{{user.email}}";
+  </script>
+  <script src="/js/userScript.js"></script>
 
 {% endblock %}

@@ -172,6 +172,10 @@ router.get('/restaurant/:name', function(req,res,next){
 // return the restaurant with given name
 router.get('/restaurantByID/:id', function(req,res,next){
 
+<<<<<<< HEAD
+=======
+	//console.log("Printing REQUEST.PARAMS.IS"+req.params.id);
+>>>>>>> 290440a03f4467d74057d0196b79c2832352ef01
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -242,7 +246,7 @@ router.get('/campaign', function(req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log(data);
+			//console.log(data);
 
 			res.json(data);
 		}
@@ -321,17 +325,21 @@ router.post('/transaction', function(req,res,next){
 // put LIST of orders in database -
 // body has the format
 // [ {food: foodObject, quantity: Y1},{ foodID: foodObj, quantity: Y2}]
-router.post('/order/:accountID/:campaignID/:userID', function(req,res,next){
+router.post('/order/:campaignID/:userID', function(req,res,next){
 
 	var givenParam = req.params;
-	console.log(givenParam);
+
+	// console.log(givenParam);
+
+	var dat = req.body;
+	console.log(dat);
 
 	var transactionData = {};
 	transactionData["time"] = new Date();
-	transactionData["accountID"] = givenParam.accountID;
+	//transactionData["accountID"] = givenParam.accountID;
 	transactionData["type"] = "cash credit";
 	
-	var thisAccountID = givenParam.accountID
+	//var thisAccountID = givenParam.accountID
 	var thisCampaignID = givenParam.campaignID;
 	var thisUserID = givenParam.userID;
 
@@ -343,25 +351,21 @@ router.post('/order/:accountID/:campaignID/:userID', function(req,res,next){
 		else{
 
 			var thisTransactionID = transaction._id;
-			var dat = req.body;
-			if (dat.constructor !== Array){
-				dat = [dat];
-			}
-
+	
 			// making order object
-			var orderData = dat.map(function(d,i){
+			var orderData = (dat.order).map(function(d,i){
 				var orderObj = {};
 				orderObj["transactionID"] = thisTransactionID;
 				orderObj["campaignID"] = thisCampaignID;
 				orderObj["userID"] = thisUserID;
-				orderObj["foodID"] = d.food._id;
+				orderObj["foodID"] = d._id;
 				orderObj["quantity"] = d.quantity;
-				orderBalance += d.quantity* d.food.price;
+				orderBalance += d.totalPrice;
 				return orderObj;
 			});
 
 			//async create and save
-			async.forEach(dat, createAndSave.bind(createAndSave, Order), function(err){
+			async.forEach(orderData, createAndSave.bind(createAndSave, Order), function(err){
 			    if (err) {
 			    	console.error(err);
 			    	res.json(null);
