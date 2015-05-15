@@ -88,7 +88,7 @@
 {% block footer %}
 
   {{super()}}
-  <script>
+  <script type='text/javascript'>
   	var foodItems=JSON.parse('{{restaurant.foodItems|stringify}}');
   	var userID = "{{user._id}}";
   	var campaignID = "{{campaign._id}}";

@@ -75,8 +75,7 @@ passport.use(new GoogleStrategy({
     callbackURL: config.baseURL+"/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
-    //var netID = (profile.emails[0].value).split('@')[0];
-    console.log(profile);
+    
     User.findOne({email: profile.emails[0].value},
       function (err, user) {
       if(err){
