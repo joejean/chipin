@@ -33,7 +33,7 @@ function MenuViewModel() {
 
 	self.save = function(){
 		//TODO: modify this and add the correct endpoint
-		var url = "http://localhost:3000/api/order/"+campaignID+"/"+userID;
+		var url = baseURL+"/api/order/"+campaignID+"/"+userID;
 		$.ajax(url, { 
 			data: ko.toJSON({order: self.orderedItems}),
 			type: 'post',

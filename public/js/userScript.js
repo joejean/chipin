@@ -23,17 +23,17 @@ function UserViewModel(){
 	self.roomNo = ko.observable();
 
 	self.save = function(){
-		//TODO: modify this and add the correct endpoint
+		
 		console.log(self.selectedBuildingNo());
 		console.log(self.name());
 		console.log(self.email());
 		console.log(self.phone());
-		$.ajax("http://localhost:3000/api/user", {
+		$.ajax(baseURL+"/api/user", {
 			data: ko.toJSON({_id: self.userID, email: self.email, name: self.name,
 			 phone: self.phone, buildingNo: self.selectedBuildingNo, roomNo: self.roomNo}),
 			type: "post", 
 			contentType: "application/json",
-			//TODO: Modify this to redirect the user to home on a successful submission
+			
 			success: function(result){ window.location = "/";}
 
 		});
