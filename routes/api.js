@@ -172,10 +172,7 @@ router.get('/restaurant/:name', function(req,res,next){
 // return the restaurant with given name
 router.get('/restaurantByID/:id', function(req,res,next){
 
-<<<<<<< HEAD
-=======
-	//console.log("Printing REQUEST.PARAMS.IS"+req.params.id);
->>>>>>> 290440a03f4467d74057d0196b79c2832352ef01
+
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
