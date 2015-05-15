@@ -15,16 +15,12 @@ var config = require("./config");
 var index = require('./routes/index');
 var nunjucksDate = require('nunjucks-date');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
-require('coffee-script/register') // <-- This dependency is to be removed very soon.
-penguin = require('penguin')
+var attachBaseUrl = require("./middlewares/attachBaseUrl");
 
 
 
- 
 var app = express();
-//for Penguin Admin
-//admin = new penguin.Admin()
-//admin.setupApp(app);
+
 
 // view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));
@@ -66,6 +62,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(attachAuthenticationStatus);
+app.use(attachBaseUrl);
 
 //Our Routes
 app.use('/', index);
@@ -75,7 +72,7 @@ app.use('/api', api);
 passport.use(new GoogleStrategy({
     clientID: config.google.clientID,
     clientSecret: config.google.clientSecret,
-    callbackURL: "http://localhost:3000/auth/google/callback"
+    callbackURL: config.baseURL+"/auth/google/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     //var netID = (profile.emails[0].value).split('@')[0];

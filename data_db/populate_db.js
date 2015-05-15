@@ -97,9 +97,8 @@ function makeCampaignFromName(restaurantName,endTime,callback){
 
 function createOneToyCampaign(){
   var endDate = new Date();
-  var myRes = "alkram";
-  var endTime = new Date(endDate.getTime() + 24*60 *60*1000);
-
+  var myRes = "meowFood";
+  var endTime = new Date(endDate.getTime() + 4*60 *60*1000);
 
 
   makeCampaignFromName(myRes,endTime, function(err,dat){
@@ -124,7 +123,7 @@ var restaurantAll = [
     "phone":"02-466-8485",
     "minimumAmount":100,
     "waitTime":30,
-    "availableTime":"17:00-21:00",
+    "availableTime":"17:00-21:00"
   },
   {
     "name":"lebanese flower",
@@ -141,6 +140,14 @@ var restaurantAll = [
     "minimumAmount":100,
     "waitTime":30,
     "availableTime":"16:00-19:00"
+  },
+  {
+    "name":"meowFood",
+    "address":"add4",
+    "phone":" 02-894-9999",
+    "minimumAmount":100,
+    "waitTime":40,
+    "availableTime":" 08:00-19:00"
   }
 ];
 
@@ -280,9 +287,40 @@ var foodAll = [
     "type":"main",
     "description":"",
     "availableTime":""
+  },
+  {
+    "restName":"meowFood",
+    "name":" crispy tuna meow",
+    "price":20,
+    "type":" main",
+    "description":"",
+    "availableTime":""
+  },
+  {
+    "restName":"meowFood",
+    "name":" fried fish bones",
+    "price":5,
+    "type":" appetizer",
+    "description":"",
+    "availableTime":""
+  },
+  {
+    "restName":"meowFood",
+    "name":" salmon milk sauce",
+    "price":30,
+    "type":" main",
+    "description":"",
+    "availableTime":""
+  },
+  {
+    "restName":"meowFood",
+    "name":" spaghetti yarn ball",
+    "price":20,
+    "type":" main",
+    "description":"",
+    "availableTime":""
   }
 ];
-
 
 async.forEach(restaurantAll, populateDB.bind(populateDB, Restaurant), function(err){
     if (err) {   

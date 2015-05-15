@@ -1,32 +1,23 @@
 $(document).ready(function(){
 
-	/*var theFakeEndTime = new Date();
-	theFakeEndTime.setTime(theFakeEndTime.getTime()+5*1000);*/
+	
 	countDown(endTime);
 
 	function countDown (theEndTime){
-
-		console.log(theEndTime);
 
 		var theCurrentTime = new Date();
 
 		var millisecondsLeft = theEndTime.getTime() - theCurrentTime.getTime();
 		var theRemainingTime = new Date(millisecondsLeft);
 
-		console.log("theCurrentTime is: " + theCurrentTime);
-		console.log("theEndTime is: " + theEndTime);
-
 		var daysLeft = theEndTime.getDay() - theCurrentTime.getDay();
-		console.log("daysLeft is: "+ daysLeft);
-
+		
 		var hoursLeft = theEndTime.getHours()-theCurrentTime.getHours();
-		console.log("hoursLeft is: "+ hoursLeft);
-
+		
 		var minutesLeft = theEndTime.getMinutes()- theCurrentTime.getMinutes();
-		console.log("minutesLeft is: "+ minutesLeft);
+		
 		var secondsLeft = theEndTime.getSeconds()- theCurrentTime.getSeconds();
-		console.log("secondsLeft is: "+ secondsLeft);
-
+	
 			timer_dom =  document.getElementById("jumbo");
 
 			timer_day = document.getElementById("timer_day");
