@@ -141,6 +141,21 @@ function makeCampaignFromName(restaurantName,endTime,callback){
 
 // --------------------- --------------------- --------------------- --------------------- //
 
+// return all restaurants
+router.get('/allRestaurant', function(req,res,next){
+
+	Restaurant.find({}, function (err, data) {
+	  if (err) {
+	  	console.error(err);
+	  } 
+	  else{
+
+	  	res.json(data);
+
+	  }
+	});
+});
+
 // return the restaurant with given name
 router.get('/restaurant/:name', function(req,res,next){
 
@@ -172,10 +187,7 @@ router.get('/restaurant/:name', function(req,res,next){
 // return the restaurant with given name
 router.get('/restaurantByID/:id', function(req,res,next){
 
-<<<<<<< HEAD
-=======
 	//console.log("Printing REQUEST.PARAMS.IS"+req.params.id);
->>>>>>> 290440a03f4467d74057d0196b79c2832352ef01
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -324,7 +336,6 @@ router.post('/transaction', function(req,res,next){
 
 // put LIST of orders in database -
 // body has the format
-// [ {food: foodObject, quantity: Y1},{ foodID: foodObj, quantity: Y2}]
 router.post('/order/:campaignID/:userID', function(req,res,next){
 
 	var givenParam = req.params;
@@ -383,7 +394,7 @@ router.post('/order/:campaignID/:userID', function(req,res,next){
 });
 
 // get all orders from a given campaign id
-router.get('/order/:campaignID', function (req,res,next){
+router.get('/orderByCampaignID/:campaignID', function (req,res,next){
 
 	var givenParam = req.params;
 	var myParam = {campaignID:givenParam.campaignID};
@@ -397,6 +408,24 @@ router.get('/order/:campaignID', function (req,res,next){
 		}
 	});
 });
+
+// get all orders from a given userID
+router.get('/orderByUserID/:userID', function (req,res,next){
+
+	var givenParam = req.params;
+	var myParam = {userID:givenParam.userID};
+	Order.find(myParam, function(err,data){
+		if (err){
+			console.error(err);
+		}
+		else{
+			console.log(data);
+			res.json(data);
+		}
+	});
+});
+
+
 
 // put account in database and link with user
 // format as

@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container">
+
+        <div class="col-md-12">
+        	<div class="row">
+				<div class="col-md-6">
+					<h2>Restaurant</h2>
+				</div>
+				<div class="col-md-6">
+					<h2>Popular Items</h2>
+				</div>
+        	</div>
+        	{% for item in restaurants %}
+        		<div class="jumbotron" id="jumbo">
+	        	<div class="row">
+		        		<div class = "col-md-6">
+		    				<div id = "{{item._id}}">
+								<h1> <strong> {{ item.name}} </strong></h1>
+								<h3> minimum: <strong> {{ item.minimumAmount}} AED </strong></h3>
+								<h3>waiting time: <strong> {{ item.waitTime}} min</strong></h3>
+							</div>	
+						</div>
+
+					    <div class = "col-md-6">
+		    				<div id = "{{item._id}}">
+									{% for food in item.foodItems %}
+									<h3> <strong> {{ food.name}}  {{ food.price}} </strong></h1>
+									{% endfor %}
+							</div>	
+						</div>
+
+    	    	</div>
+    	    	</div>
+	
+	        	<div class="row">
+					<div class="col-md-12">
+						<div class="jumbotron" id="jumbo">
+		        		<h2> Chipin {{ item.name}} by  
+			        		<select class="selectHour">
+			        			{% for hour in item.hourRange %}
+									<option>{{hour}}</option>
+								{% endfor %}
+							</select>
+							:
+							<select class="selectMinute">
+			        			{% for min in item.minRange %}
+									<option>{{min}}</option>
+								{% endfor %}
+							</select>
+						</h2>  
+		        		</div>
+		        	</div>
+	        	</div>
+
+			{% endfor %}
+	</div>
+
+
+{% endblock %}

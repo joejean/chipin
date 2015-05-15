@@ -16,7 +16,6 @@ var index = require('./routes/index');
 var nunjucksDate = require('nunjucks-date');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
 require('coffee-script/register') // <-- This dependency is to be removed very soon.
-penguin = require('penguin')
 
 
 
