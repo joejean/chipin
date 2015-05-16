@@ -113,7 +113,7 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
 //*** Route Handlers for Login and Logout****//
 router.get('/login',function(req, res){
 
-    // res.redirect("/auth/google");
+    res.redirect("/auth/google");
   });
 
 router.get('/auth/google',
@@ -139,7 +139,7 @@ router.get('/logout',function(req, res){
    res.redirect("/");
   });
 
-router.get('/restaurant', function(req,res){
+router.get('/admin_add_campaign', function(req,res){
   
   var url = config.baseURL+"/api/allRestaurant";
   console.log("calling restaurant");
@@ -180,7 +180,7 @@ router.get('/restaurant', function(req,res){
 
     };
 
-    res.render("restaurant.html", {"title":"Restaurants", "restaurants":restaurantList});
+    res.render("admin_add_campaign.html", {"title":"Restaurants", "restaurants":restaurantList});
 
   });
 
