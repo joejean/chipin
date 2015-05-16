@@ -110,7 +110,7 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
 //*** Route Handlers for Login and Logout****//
 router.get('/login',function(req, res){
 
-    res.redirect("/auth/google");
+    // res.redirect("/auth/google");
   });
 
 router.get('/auth/google',
@@ -136,6 +136,44 @@ router.get('/logout',function(req, res){
    res.redirect("/");
   });
 
+router.get('/restaurant', function(req,res){
+  
+  var url = "http://localhost:3000/api/allRestaurant";
+  console.log("calling restaurant");
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var restaurantList = JSON.parse(body);
+    var timeNow = new Date();
+
+    var i;
+
+    // manipulate the allowed duration to chipin
+    // JOE - i'm trying to use this timepicker library http://jonthornton.github.io/jquery-timepicker/
+    // 
+    for( i =0 ; i< restaurantList.length; i++){
+
+      // time deliver here is the earliest one person could get an order
+      // eg. he orders a lot that his deal gets automatically activated
+      var timeDeliver = new Date( timeNow.getTime() +restaurantList[i].waitTime*60*1000 );
+
+
+      var hourBegin = timeDeliver.getHours();
+      var hourEnd = 24;
+      var beginRangeHour = Array.apply(null, Array(hourEnd-hourBegin)).map(function (_, i) {return hourBegin+i;});
+      var minBegin = timeDeliver.getMinutes();
+      var beginRangeMinute = Array.apply(null, Array(60-minBegin)).map(function (_, i) {return minBegin+i;});
+      var fullRangeMinute = Array.apply(null, Array(60)).map(function (_, i) {return i;});
+      restaurantList[i]["minRange"] = beginRangeMinute
+      restaurantList[i]["hourRange"] = beginRangeHour;
+    };
+
+    res.render("restaurant.html", {"title":"Restaurants", "restaurants":restaurantList});
+
+  });
+
+
+});
 
 
 module.exports = router;
