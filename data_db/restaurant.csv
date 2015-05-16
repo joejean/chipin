@@ -1,1 +1,1 @@
-name,address,phone,minimumAmount,waitTime,availableTimebeijing,add1,02-466-8485,100,30,17:00-21:00lebanese flower,add2,02-349-8110,120,40,13:00-23:00alkram,add3,02-894-1313,100,30,16:00-19:00meowFood,add4, 02-894-9999, 100, 40, 08:00-19:00
+name,address,phone,minimumAmount,waitTime,startTime,endTimebeijing,add1,02-466-8485,100,30,5:00pm,9:00pmlebanese flower,add2,02-349-8110,120,40,1:00pm,11:00pmalkram,add3,02-894-1313,100,30,4:00pm,7:00pmmeowFood,add4, 02-894-9999, 100, 40,8:00pm,9:00pm

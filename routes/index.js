@@ -7,6 +7,9 @@ var requireUpdatedProfile = require("../middlewares/requireUpdatedProfile");
 var config = require("../config");
 var async = require('async');
 var request = require('request');
+var formatTime = require('../lib/formatTime');
+// time-related helper
+
 
 
 
@@ -138,7 +141,7 @@ router.get('/logout',function(req, res){
 
 router.get('/restaurant', function(req,res){
   
-  var url = "http://localhost:3000/api/allRestaurant";
+  var url = config.baseURL+"/api/allRestaurant";
   console.log("calling restaurant");
   request(url, function(err, response, body) {
     // JSON body
@@ -156,16 +159,25 @@ router.get('/restaurant', function(req,res){
       // time deliver here is the earliest one person could get an order
       // eg. he orders a lot that his deal gets automatically activated
       var timeDeliver = new Date( timeNow.getTime() +restaurantList[i].waitTime*60*1000 );
+      timeDeliver =  formatTime.ceilingFifteen(timeDeliver);
+
+      var nowTime = formatTime.formatAMPM(timeNow);
+      var minTime = formatTime.formatAMPM(timeDeliver);
+      var maxTime = restaurantList[i].endTime;
+
+      if (formatTime.getTimeMinute(nowTime) < formatTime.getTimeMinute(restaurantList[i].startTime)){
+        // console.log(restaurantList[i].name);
+        // console.log("time now:"+getTimeMinute(nowTime));
+        // console.log("time resstart:" + getTimeMinute(restaurantList[i].startTime));
+        restaurantList[i]["minTime"] = "";
+        restaurantList[i]["maxTime"] = ""; 
+      }
+      else{
+        restaurantList[i]["minTime"] = minTime;
+        restaurantList[i]["maxTime"] = maxTime;
+      }
 
 
-      var hourBegin = timeDeliver.getHours();
-      var hourEnd = 24;
-      var beginRangeHour = Array.apply(null, Array(hourEnd-hourBegin)).map(function (_, i) {return hourBegin+i;});
-      var minBegin = timeDeliver.getMinutes();
-      var beginRangeMinute = Array.apply(null, Array(60-minBegin)).map(function (_, i) {return minBegin+i;});
-      var fullRangeMinute = Array.apply(null, Array(60)).map(function (_, i) {return i;});
-      restaurantList[i]["minRange"] = beginRangeMinute
-      restaurantList[i]["hourRange"] = beginRangeHour;
     };
 
     res.render("restaurant.html", {"title":"Restaurants", "restaurants":restaurantList});
