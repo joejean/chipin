@@ -11,6 +11,8 @@ var Order = require("../models/order");
 var Transaction = require("../models/transaction")
 var Account = require("../models/account")
 
+var formatTime = require('../lib/formatTime');
+
 
 // ** GENERAL HELPER FUNCTIONS ** //
 
@@ -106,12 +108,12 @@ function updateForeignData(model, foreignItem, keyParam, valParam, keyUpdate,cal
 //        endTime (date object in javascript new Date());
 // Output: campaign object 
 
-function makeCampaign(restaurant, endTime){
+function makeCampaign(restaurant, deliveryTime){
   
   // console.log(restaurant.waitTime);
   console.log(restaurant);
-  var deliveryTime = new Date(endTime.getTime() + restaurant.waitTime * 60*1000);
-  console.log(deliveryTime);
+  var endTime = new Date(deliveryTime.getTime() - restaurant.waitTime * 60*1000);
+  console.log(endTime);
   var campaign = { restaurant: restaurant._id, 
                                 currentStatus: "active",
                                 endTime: endTime,
@@ -122,7 +124,7 @@ function makeCampaign(restaurant, endTime){
 }
 
 
-function makeCampaignFromName(restaurantName,endTime,callback){
+function makeCampaignFromName(restaurantName,deliveryTime,callback){
 
 	findOneThisParam(Restaurant,"name",restaurantName,function(err,data){
 		if (err){
@@ -130,7 +132,23 @@ function makeCampaignFromName(restaurantName,endTime,callback){
 		}
 		else{
 			if (data){
-				callback(null, makeCampaign(data, endTime));
+				callback(null, makeCampaign(data, deliveryTime));
+			}
+			else{
+				callback(null, null);
+			}
+		}
+	});
+}
+function makeCampaignFromID(restaurantID,deliveryTime,callback){
+
+	findOneThisParam(Restaurant,"_id",restaurantID,function(err,data){
+		if (err){
+		  callback(err, null);
+		}
+		else{
+			if (data){
+				callback(null, makeCampaign(data, deliveryTime));
 			}
 			else{
 				callback(null, null);
@@ -266,35 +284,115 @@ router.get('/campaign', function(req,res,next){
 });
 
 // put campaign in the database
-// {restaurantName: "restName", 
-// "endTime": new Data()}
+// {restaurantName: "restName", or restaurantID: "adf33xd"
+// rawDate: 2011-5-11,
+// rawTime: 5:00pm}
+
 router.post('/campaign', function(req,res,next){
 
 	// makeCampaignFromName(restaurantName,endTime,callback){
 	var dat = req.body;
-	makeCampaignFromName(dat.restaurantName, new Date(dat.endTime), function(err,dat){
-		if (err){
-			console.error(err);
-			res.json(null);
+
+	var valDate = dat.rawDate; 
+	var valTime = dat.rawTime;
+
+	var dateToDeliver = new Date(valDate);
+
+	var timeToDeliver = formatTime.getTimeMinute(valTime) * 60 * 1000;
+
+	var dateTimeToDeliver = new Date( dateToDeliver.getTime() + timeToDeliver );
+	async.waterfall([
+	function(callback){
+
+		// take in either restaurant name or restaurant id
+		if (dat.restaurantName){
+			makeCampaignFromName(dat.restaurantName, dateTimeToDeliver, function(err,dat){
+			if (err){ console.log("makeCampErr"+err); callback(true); return; }
+			callback(null, dat);
+			});	
 		}
-		else{
-			if (dat){
-				createAndSave(Campaign,dat, function(err,campaign){
-					if (err){
-						console.error(err);
-						res.json(null);
-					}
-					else{
-						res.json(campaign);
-					}
-				});
-			}
-			else{
-				console.error(err);
-				res.json(null);
-			}
+		else if (dat.restaurantID){
+			console.log("in make by ID");
+			console.log(dat.endTime);
+			makeCampaignFromID(dat.restaurantID, dateTimeToDeliver, function(err,dat){
+			if (err){ console.log("makeCampByIDErr"+err); callback(true); return; }
+			callback(null, dat);
+			});
 		}
+	},
+	function(dat, callback){
+		
+		console.log("got campagin");
+		console.log(dat);
+		createAndSave(Campaign,dat, function(err,campaign){
+			console.log("saving...");
+			console.log(dat);
+			if (err){ console.log(err); callback(true); return; }
+			callback(null,campaign)
+		});
+	}
+	],
+	function (err, result) {
+	//console.log(result);
+	if(err) { console.log(err); res.json(null)}
+	res.json(result);
+
 	});
+
+// ////////
+// 	if (dat.restaurantName){
+// 		makeCampaignFromName(dat.restaurantName, new Date(dat.endTime), function(err,dat){
+// 		if (err){
+// 			console.error(err);
+// 			res.json(null);
+// 		}
+// 		else{
+// 			if (dat){
+// 				createAndSave(Campaign,dat, function(err,campaign){
+// 					if (err){
+// 						console.error(err);
+// 						res.json(null);
+// 					}
+// 					else{
+// 						res.json(campaign);
+// 					}
+// 				});
+// 			}
+// 			else{
+// 				console.error(err);
+// 				res.json(null);
+// 			}
+// 		}
+// 		});	
+// 	}
+// 	else if (dat.restaurantID){
+
+// 		makeCampaign(dat.restaurantID, new Date(dat.endTime), function(err,dat){
+// 		if (err){
+// 			console.error(err);
+// 			res.json(null);
+// 		}
+// 		else{
+// 			if (dat){
+// 				createAndSave(Campaign,dat, function(err,campaign){
+// 					if (err){
+// 						console.error(err);
+// 						res.json(null);
+// 					}
+// 					else{
+// 						res.json(campaign);
+// 					}
+// 				});
+// 			}
+// 			else{
+// 				console.error(err);
+// 				res.json(null);
+// 			}
+// 		}
+// 		});	
+
+// 	}
+
 });
 
 

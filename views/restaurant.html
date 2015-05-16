@@ -20,6 +20,7 @@
 								<h1> <strong> {{ item.name}} </strong></h1>
 								<h3> minimum: <strong> {{ item.minimumAmount}} AED </strong></h3>
 								<h3>waiting time: <strong> {{ item.waitTime}} min</strong></h3>
+								<h3>{{ item.startTime}} - {{ item.endTime}}  </h3>
 							</div>	
 						</div>
 
@@ -37,8 +38,24 @@
 	        	<div class="row">
 					<div class="col-md-12">
 						<div class="jumbotron" id="jumbo">
-		        		<h2> Chipin {{ item.name}} by  
-			        		<select class="selectHour">
+
+		        		{% if item.maxTime %}
+		        		<h2> Chipin {{ item.name}} by </h2>
+
+						<input id="selectDate{{item._id}}" type="text"  autocomplete="off">
+
+						<input id="selectTime{{item._id}}" minTime = "{{item.minTime}}" maxTime= "{{item.maxTime}}" type="text" class="time ui-timepicker-input" autocomplete="off">
+
+						<input id="submit{{item._id}}" type="submit" value="Submit">
+
+						{% else %}
+						<h2>
+							not available now						
+						</h2>  
+
+						{% endif %}
+
+<!-- 			        		<select class="selectHour">
 			        			{% for hour in item.hourRange %}
 									<option>{{hour}}</option>
 								{% endfor %}
@@ -48,8 +65,7 @@
 			        			{% for min in item.minRange %}
 									<option>{{min}}</option>
 								{% endfor %}
-							</select>
-						</h2>  
+							</select> -->
 		        		</div>
 		        	</div>
 	        	</div>
@@ -59,3 +75,4 @@
 
 
 {% endblock %}
+

@@ -10,7 +10,6 @@ var foodSchema = new Schema({
 	price: Number, 
 	type: String, 
 	description: String, 
-	availableTime: String 
 });
 
 var restaurantSchema = new Schema({
@@ -19,7 +18,8 @@ var restaurantSchema = new Schema({
 	phone: String, 
 	minimumAmount: Number,
 	waitTime: Number,
-	availableTime: String,
+	startTime: String,
+	endTime: String,
 	foodItems: [foodSchema]
 
 });

@@ -123,7 +123,8 @@ var restaurantAll = [
     "phone":"02-466-8485",
     "minimumAmount":100,
     "waitTime":30,
-    "availableTime":"17:00-21:00"
+    "startTime":"5:00pm",
+    "endTime":"9:00pm"
   },
   {
     "name":"lebanese flower",
@@ -131,7 +132,8 @@ var restaurantAll = [
     "phone":"02-349-8110",
     "minimumAmount":120,
     "waitTime":40,
-    "availableTime":"13:00-23:00"
+    "startTime":"1:00pm",
+    "endTime":"11:00pm"
   },
   {
     "name":"alkram",
@@ -139,7 +141,8 @@ var restaurantAll = [
     "phone":"02-894-1313",
     "minimumAmount":100,
     "waitTime":30,
-    "availableTime":"16:00-19:00"
+    "startTime":"4:00pm",
+    "endTime":"7:00pm"
   },
   {
     "name":"meowFood",
@@ -147,9 +150,10 @@ var restaurantAll = [
     "phone":" 02-894-9999",
     "minimumAmount":100,
     "waitTime":40,
-    "availableTime":" 08:00-19:00"
+    "startTime":"8:00pm",
+    "endTime":"9:00pm"
   }
-];
+]
 
 var foodAll = [
   {
