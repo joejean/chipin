@@ -20,7 +20,6 @@ var formatTime = require('../lib/formatTime');
 function createAndSave( model, data, callback){
 	var myRecord = new model(data);
 
-	console.log(myRecord);
 	myRecord.save(function(err){
 	    if(err) {
 	    	console.log("error saving");
@@ -28,7 +27,6 @@ function createAndSave( model, data, callback){
 	    	callback(err, null);
 	    }
 	    else{
-	        console.log(myRecord);
 	        callback(null, myRecord);
 	    }
 	});
@@ -111,9 +109,9 @@ function updateForeignData(model, foreignItem, keyParam, valParam, keyUpdate,cal
 function makeCampaign(restaurant, deliveryTime){
   
   // console.log(restaurant.waitTime);
-  console.log(restaurant);
+  // console.log(restaurant);
   var endTime = new Date(deliveryTime.getTime() - restaurant.waitTime * 60*1000);
-  console.log(endTime);
+  // console.log(endTime);
   var campaign = { restaurant: restaurant._id, 
                                 currentStatus: "active",
                                 endTime: endTime,
@@ -312,8 +310,6 @@ router.post('/campaign', function(req,res,next){
 			});	
 		}
 		else if (dat.restaurantID){
-			console.log("in make by ID");
-			console.log(dat.endTime);
 			makeCampaignFromID(dat.restaurantID, dateTimeToDeliver, function(err,dat){
 			if (err){ console.log("makeCampByIDErr"+err); callback(true); return; }
 			callback(null, dat);
@@ -322,76 +318,17 @@ router.post('/campaign', function(req,res,next){
 	},
 	function(dat, callback){
 		
-		console.log("got campagin");
-		console.log(dat);
 		createAndSave(Campaign,dat, function(err,campaign){
-			console.log("saving...");
-			console.log(dat);
 			if (err){ console.log(err); callback(true); return; }
 			callback(null,campaign)
 		});
 	}
 	],
 	function (err, result) {
-	//console.log(result);
 	if(err) { console.log(err); res.json(null)}
 	res.json(result);
 
 	});
-
-// ////////
-// 	if (dat.restaurantName){
-// 		makeCampaignFromName(dat.restaurantName, new Date(dat.endTime), function(err,dat){
-// 		if (err){
-// 			console.error(err);
-// 			res.json(null);
-// 		}
-// 		else{
-// 			if (dat){
-// 				createAndSave(Campaign,dat, function(err,campaign){
-// 					if (err){
-// 						console.error(err);
-// 						res.json(null);
-// 					}
-// 					else{
-// 						res.json(campaign);
-// 					}
-// 				});
-// 			}
-// 			else{
-// 				console.error(err);
-// 				res.json(null);
-// 			}
-// 		}
-// 		});	
-// 	}
-// 	else if (dat.restaurantID){
-
-// 		makeCampaign(dat.restaurantID, new Date(dat.endTime), function(err,dat){
-// 		if (err){
-// 			console.error(err);
-// 			res.json(null);
-// 		}
-// 		else{
-// 			if (dat){
-// 				createAndSave(Campaign,dat, function(err,campaign){
-// 					if (err){
-// 						console.error(err);
-// 						res.json(null);
-// 					}
-// 					else{
-// 						res.json(campaign);
-// 					}
-// 				});
-// 			}
-// 			else{
-// 				console.error(err);
-// 				res.json(null);
-// 			}
-// 		}
-// 		});	
-
-// 	}
 
 });
 
@@ -437,11 +374,7 @@ router.post('/transaction', function(req,res,next){
 router.post('/order/:campaignID/:userID', function(req,res,next){
 
 	var givenParam = req.params;
-
-	// console.log(givenParam);
-
 	var dat = req.body;
-	console.log(dat);
 
 	var transactionData = {};
 	transactionData["time"] = new Date();
