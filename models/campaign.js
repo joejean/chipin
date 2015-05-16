@@ -7,7 +7,7 @@ var campaignSchema = new Schema({
 	startTime: {type: Date, default: Date.now},
 	endTime: Date,
 	deliveryTime: Date,
-	currentStatus: String,
+	currentStatus: {type:String, default:'active'},
 	balance: Number
 });
 
