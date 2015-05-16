@@ -4,6 +4,7 @@ var router = express.Router();
 var User = require("../models/user");
 var requireAuth = require("../middlewares/requireAuth");
 var requireUpdatedProfile = require("../middlewares/requireUpdatedProfile");
+var requireAdmin = require("../middlewares/requireAdmin");
 var config = require("../config");
 var async = require('async');
 var request = require('request');
@@ -12,7 +13,7 @@ var formatTime = require('../lib/formatTime');
 
 
 
-
+/*User Interface Routes*/
 router.get("/", function(req, res, next){
   var campaign;
   var restaurant;
@@ -21,7 +22,7 @@ router.get("/", function(req, res, next){
       var url = config.baseURL+"/api/campaign";
       request(url, function(err, response, body) {
         // JSON body
-        //if(err) { console.log(err);callback(true); return; }
+        if(err) { console.log(err);callback(true); return; }
         campaign = JSON.parse(body)[0];
         callback(null, campaign.restaurant);
         
@@ -39,7 +40,6 @@ router.get("/", function(req, res, next){
     }
   ],
   function (err, result) {
-    //console.log(result);
    if(err) { console.log(err); res.send(500,"Server Error"); return; }
 
    res.render("home.html", {"title":"Home", "campaign": campaign, "restaurant": result});   
@@ -81,7 +81,7 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
       var url = config.baseURL+"/api/campaign";
       request(url, function(err, response, body) {
         // JSON body
-        //if(err) { console.log(err);callback(true); return; }
+        if(err) { console.log(err);callback(true); return; }
         campaign = JSON.parse(body)[0];
         callback(null, campaign.restaurant);
         
@@ -139,7 +139,14 @@ router.get('/logout',function(req, res){
    res.redirect("/");
   });
 
-router.get('/admin_add_campaign', function(req,res){
+
+/*Admin Interface Routes*/
+router.get('/admin',requireAdmin, function(req,res){
+
+  res.render("admin.html", {"title":"Admin Home"})
+});
+
+router.get('/admin/campaign',requireAdmin, function(req,res){
   
   var url = config.baseURL+"/api/allRestaurant";
   console.log("calling restaurant");
@@ -152,8 +159,7 @@ router.get('/admin_add_campaign', function(req,res){
     var i;
 
     // manipulate the allowed duration to chipin
-    // JOE - i'm trying to use this timepicker library http://jonthornton.github.io/jquery-timepicker/
-    // 
+    // using the timepicker library http://jonthornton.github.io/jquery-timepicker/
     for( i =0 ; i< restaurantList.length; i++){
 
       // time deliver here is the earliest one person could get an order
@@ -166,9 +172,7 @@ router.get('/admin_add_campaign', function(req,res){
       var maxTime = restaurantList[i].endTime;
 
       if (formatTime.getTimeMinute(nowTime) < formatTime.getTimeMinute(restaurantList[i].startTime)){
-        // console.log(restaurantList[i].name);
-        // console.log("time now:"+getTimeMinute(nowTime));
-        // console.log("time resstart:" + getTimeMinute(restaurantList[i].startTime));
+       
         restaurantList[i]["minTime"] = "";
         restaurantList[i]["maxTime"] = ""; 
       }
@@ -180,12 +184,32 @@ router.get('/admin_add_campaign', function(req,res){
 
     };
 
-    res.render("admin_add_campaign.html", {"title":"Restaurants", "restaurants":restaurantList});
+    res.render("admin_manage_campaign.html", {"title":"Manage Campaign", "restaurants":restaurantList});
 
   });
 
 
 });
 
+
+router.get('/admin/restaurant',requireAdmin, function(req,res){
+
+  res.render("admin_manage_restaurant.html", {"title":"Manage Restaurants"})
+});
+
+router.get('/admin/admin',requireAdmin, function(req,res){
+
+  res.render("admin_manage_admin.html", {"title":"Manage Admins"})
+});
+
+router.get('/admin/menu',requireAdmin, function(req,res){
+
+  res.render("admin_manage_menu.html", {"title":"Manage Menus"})
+});
+
+router.get('/admin/orders',requireAdmin, function(req,res){
+
+  res.render("admin_manage_orders.html", {"title":"Manage Orders"})
+});
 
 module.exports = router;

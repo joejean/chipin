@@ -27,7 +27,7 @@
 					    <div class = "col-md-6">
 		    				<div id = "{{item._id}}">
 									{% for food in item.foodItems %}
-									<h3> <strong> {{ food.name}}  {{ food.price}} </strong></h1>
+									<h3> <strong> {{ food.name}}:  {{ food.price}} dhs </strong></h1>
 									{% endfor %}
 							</div>	
 						</div>
@@ -40,10 +40,10 @@
 						<div class="jumbotron" id="jumbo">
 
 		        		{% if item.maxTime %}
-		        		<h2> Chipin {{ item.name}} by </h2>
-
+		        		<h2> Start {{ item.name}} campaign </h2>
+		        		<label for="Date">End Date:</label>
 						<input id="selectDate{{item._id}}" type="text"  autocomplete="off">
-
+						<label for="Time">End Time:</label>
 						<input id="selectTime{{item._id}}" minTime = "{{item.minTime}}" maxTime= "{{item.maxTime}}" type="text" class="time ui-timepicker-input" autocomplete="off">
 
 						<input id="submit{{item._id}}" type="submit" value="Submit">
@@ -55,24 +55,13 @@
 
 						{% endif %}
 
-<!-- 			        		<select class="selectHour">
-			        			{% for hour in item.hourRange %}
-									<option>{{hour}}</option>
-								{% endfor %}
-							</select>
-							:
-							<select class="selectMinute">
-			        			{% for min in item.minRange %}
-									<option>{{min}}</option>
-								{% endfor %}
-							</select> -->
 		        		</div>
 		        	</div>
 	        	</div>
 
 			{% endfor %}
 	</div>
-
+</div>
 
 {% endblock %}
 
