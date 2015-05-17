@@ -3,7 +3,7 @@ Schema = mongoose.Schema;
 var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var campaignSchema = new Schema({
-	restaurant: ObjectId,
+	restaurant: {type: ObjectId, ref:"Restaurant"},
 	startTime: {type: Date, default: Date.now},
 	endTime: Date,
 	deliveryTime: Date,

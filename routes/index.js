@@ -24,7 +24,7 @@ router.get("/", function(req, res, next){
         // JSON body
         if(err) { console.log(err);callback(true); return; }
         campaign = JSON.parse(body)[0];
-        callback(null, campaign.restaurant);
+        callback(null, campaign.restaurant._id);
         
       });
       
@@ -106,6 +106,22 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
    res.render("menu.html", {"title":"Menu", "campaign": campaign, "restaurant": result});   
   });
 
+});
+
+router.get('/campaign', function(req,res){
+
+
+  var url = config.baseURL+"/api/campaign";
+  console.log("calling all active campaigns");
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var campaignList = JSON.parse(body);
+    console.log(campaignList);
+
+    res.render("campaign.html", {"title":"Campaign", "campaigns":campaignList});
+
+  });
 });
 
 
@@ -192,7 +208,6 @@ router.get('/admin/campaign',requireAdmin, function(req,res){
 });
 
 router.get('/order', requireAuth, function(req,res){
-
 
   var url = config.baseURL+"/api/orderByUserID/"+req.user._id;
   console.log("calling orders");
