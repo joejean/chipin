@@ -235,10 +235,12 @@ router.route('/restaurant')
 
 });
 
-// to replace get campaing by restaurant
+// MUST replace get campaing by restaurant
+// the only access point that will also update if the 
 router.get('/campaignByID/:campaignID', function(req,res,next){
 
-	Campaign.find({_id:req.params.campaignID}).
+
+	Campaign.find({_id:req.params.campaignID, currentStatus:"active"}).
 	populate("restaurant").
 	exec(function (err, data){
 	// findThisParam(Campaign,"currentStatus" , "active", function(err,data){
@@ -256,7 +258,6 @@ router.get('/campaignByID/:campaignID', function(req,res,next){
 // get all campaigns from a given restaurant
 router.get('/campaign/:restaurantName', function(req,res,next){
 
-
 	findOneThisParam(Restaurant,"name",req.params.restaurantName, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -273,9 +274,26 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 				res.json(data);
 			}
 		});
-
 	  }
 	});
+});
+
+// deactivate all the campaigns that time has passed
+// notify admin of succeeding
+// notify all users of failing
+router.get('/pingCampaign',function(req,res,next){
+
+	Campaign.find().
+	where('endTime').gte(new Date()).
+	exec(function (err, data){
+		if (err){
+			console.error(err);
+		}
+		else{
+			res.json(data);
+		}
+	});
+
 });
 
 
