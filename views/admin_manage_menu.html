@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% set active_page = 'manageRestaurant' %} 
+{% block content %}
+
+    <div class="container">
+
+        <div class="col-md-6 col-md-offset-3">
+         
+            <h2>Add Menu Items To A Restaurant</h2>
+            <form>
+              <div class="form-group">
+                <label for="restaurant">Restaurant Name</label>
+                <select data-bind="options: restaurantList, value: selectedRestaurant" class="form-control" required></select>
+              </div>
+            </form>
+            <form class="form-inline">
+              <div data-bind="foreach: menuItems">
+                <div class="form-group">
+                  <label class="sr-onl" for="name">Name</label>
+                  <input data-bind="value: name" type="text" class="form-control" id="menuItemName" placeholder="Item Name">
+
+                  <label class="sr-onl" for="name">Price</label>
+                  <input data-bind="value: price" type="text" class="form-control" id="menuItemPrice" placeholder="Price">
+                  <a data-bind="click: $root.removeMenuItem" type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a> 
+                </div>
+
+              </div>
+
+              <br>
+              
+              <a data-bind="click: save" type="submit" class="pull-right btn btn-primary">Submit</a>
+            </form>
+        <a data-bind="click: addMenuItem" type="submit" class="btn btn-info">More Menu Items</a>
+
+          
+        </div>
+      
+  </div>
+
+  
+
+{% endblock %}
+
+{% block footer%}
+
+    {{super()}}
+    <script src="/js/adminMenuScript.js"></script>
+
+
+{% endblock %}
+

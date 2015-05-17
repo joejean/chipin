@@ -231,6 +231,15 @@ router.route('/restaurant')
 .delete(function(req,res,next){
 
 	var data = req.body;
+	Restaurant.remove({_id: data.id}, function(err){
+		if (err){
+			res.json({error:"Could not delete restaurant"});
+		}
+		else{
+			res.json({success:"success"});
+		}
+
+	});
 	
 
 });
