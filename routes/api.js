@@ -228,6 +228,24 @@ router.post('/restaurant', function(req,res,next){
 	});
 });
 
+// to replace get campaing by restaurant
+router.get('/campaignByID/:campaignID', function(req,res,next){
+
+	Campaign.find({_id:req.params.campaignID}).
+	populate("restaurant").
+	exec(function (err, data){
+	// findThisParam(Campaign,"currentStatus" , "active", function(err,data){
+		if (err){
+			console.error(err);
+		}
+		else{
+			//console.log(data);
+
+			res.json(data);
+		}
+	});
+});
+
 // get all campaigns from a given restaurant
 router.get('/campaign/:restaurantName', function(req,res,next){
 
@@ -259,7 +277,7 @@ router.get('/campaign', function(req,res,next){
 
 	Campaign.find({currentStatus:"active"}).
 	populate("restaurant").
-	sort({deliveryTime:'desc'}).
+	sort({deliveryTime:'asc'}).
 	exec(function (err, data){
 	// findThisParam(Campaign,"currentStatus" , "active", function(err,data){
 		if (err){
@@ -368,6 +386,8 @@ router.post('/order/:campaignID/:userID', function(req,res,next){
 
 	var givenParam = req.params;
 	var dat = req.body;
+
+	console.log(dat);
 
 	var transactionData = {};
 	transactionData["time"] = new Date();

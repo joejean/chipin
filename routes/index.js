@@ -70,6 +70,20 @@ router.get("/userInfo",requireAuth, function(req, res, next){
   res.render("userinfo.html", {"title":"User Info"});
 });
 
+
+// to replace menu by restaurant
+router.get("/menuByCampaign/:campaignID",requireAuth, requireUpdatedProfile, function(req, res, next){
+
+  var url = config.baseURL+"/api/campaignByID/"+req.params.campaignID;
+  request(url, function(err, response, body) {
+        // JSON body
+    if(err) { console.log(err); res.send(500,"Server Error"); return; }
+    campaign = JSON.parse(body)[0];
+    res.render("menu.html", {"title":"Menu", "campaign": campaign, "restaurant": campaign.restaurant});   
+        
+  });
+});
+
 router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(req, res, next){
   var restaurantID = req.params.restaurantID;
  
@@ -102,7 +116,6 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
   function (err, result) {
     //console.log(result);
    if(err) { console.log(err); res.send(500,"Server Error"); return; }
-
    res.render("menu.html", {"title":"Menu", "campaign": campaign, "restaurant": result});   
   });
 
@@ -117,7 +130,7 @@ router.get('/campaign', function(req,res){
     // JSON body
     if(err) { console.log(err); return; }
     var campaignList = JSON.parse(body);
-    console.log(campaignList);
+
 
     res.render("campaign.html", {"title":"Campaign", "campaigns":campaignList});
 
@@ -221,8 +234,6 @@ router.get('/order', requireAuth, function(req,res){
       totalPrice += d.price * d.quantity;
     });
 
-    console.log(myOrders);
-    console.log(totalPrice);
     res.render("order.html", {"myOrder":myOrders, "total":totalPrice});
 
   });
