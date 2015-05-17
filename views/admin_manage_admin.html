@@ -1,0 +1,64 @@
+{% extends "base.html" %}
+{% set active_page = 'manageRestaurant' %} 
+{% block content %}
+
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+            <h2>Add New Admin</h2> <br>
+            <form class="form-inline">
+              <div data-bind="foreach: newAdmins">
+                <div class="form-group">
+                  <label class="sr-onl" for="name">Name</label>
+                  <input data-bind="value: name" type="text" class="form-control" id="adminName" placeholder="Item Name" required>
+
+                  <label class="sr-onl" for="email">Email</label>
+                  <input data-bind="value: email" type="email" class="form-control" id="adminEmail" placeholder="netid@nyu.edu" required>
+                  <a data-bind="click: $root.removeAdmin" type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a> 
+                </div>
+
+              </div>
+
+              <br>
+              <a data-bind="click: addAdmin" type="submit" class="btn btn-info">Add 1 More Admin</a>
+              <a data-bind="click: save" type="submit" class="btn btn-primary">Submit</a>
+            </form>
+            
+
+        </div>
+
+          <div class="col-md-6">
+           
+              <h2>The Current Admins</h2>
+              <table class="table">
+                <thead>
+                  <tr>
+                    <td>Name</td>
+                    <td>Email</td>
+                  </tr>
+                </thead>
+                <tbody data-bind="foreach: currentAdmins">
+                  <tr>
+                    <td data-bind="text: name"></td>
+                    <td data-bind="text: email"></td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+         
+      </div>
+        
+  </div>
+
+  
+
+{% endblock %}
+
+{% block footer%}
+
+    {{super()}}
+    <script src="/js/admin_manage_admin.js"></script>
+
+
+{% endblock %}
+

@@ -8,8 +8,9 @@ var Restaurant = require('../models/restaurant').restaurantModel;
 var Food = require('../models/restaurant').foodModel;
 var Campaign = require('../models/campaign');
 var Order = require("../models/order");
-var Transaction = require("../models/transaction")
-var Account = require("../models/account")
+var Transaction = require("../models/transaction");
+var Account = require("../models/account");
+var Admin = require("../models/admin");
 
 var formatTime = require('../lib/formatTime');
 
@@ -22,8 +23,6 @@ function createAndSave( model, data, callback){
 
 	myRecord.save(function(err){
 	    if(err) {
-	    	console.log("error saving");
-	    	console.log(err);
 	    	callback(err, null);
 	    }
 	    else{
@@ -71,7 +70,6 @@ function addForeignData(model, foreignItem, keyParam, valParam, keyUpdate,callba
     	callback(err,null);
     } 
     else{
-    	console.log(data);
     	callback(null,data);
     }
   });
@@ -90,7 +88,6 @@ function updateForeignData(model, foreignItem, keyParam, valParam, keyUpdate,cal
     	callback(err,null);
     } 
     else{
-    	console.log(data);
     	callback(null,data);
     }
   });
@@ -182,8 +179,7 @@ router.get('/restaurant/:name', function(req,res,next){
 	  	console.error(err);
 	  } 
 	  else{
-	  	console.log("in get rest");
-		console.log(data);
+	 
 		try{
 			data.foodItems.forEach( function(d,i,arr){
 				// var thisObj = JSON.parse(d);
@@ -202,6 +198,33 @@ router.get('/restaurant/:name', function(req,res,next){
 
 
 // return the restaurant with given name
+router.route('/admin')
+.get(function(req,res,next){
+	Admin.find({},function (err, data) {
+	  if (err) {
+	  	console.error(err);
+	  } 
+	  else{
+  	  	res.json(data);
+	  }
+	});
+})
+.post(function(req, res, next){
+	data = req.body;
+	createAndSave(Admin,data.admins[0], function(err, admin){
+		if (err){
+			res.json([]);
+		}
+		else{
+			res.json(admin);
+		}
+	});
+});
+
+
+
+
+// return the restaurant with given name
 router.route('/restaurantByID/:id')
 .get(function(req,res,next){
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
@@ -215,7 +238,7 @@ router.route('/restaurantByID/:id')
 })
 .put(function(req, res, next){
 	data = req.body;
-	Restaurant.update({_id:req.params.id}, {$set: {foodItems:data.foodItems}}, function(err){
+	Restaurant.update({_id:req.params.id}, {$addToSet: {foodItems: {$each: data.foodItems} }}, function(err){
 		if (err){
 			res.json({error:"Could not Save Menu Items"});
 		}
@@ -296,14 +319,13 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 	  	console.error(err);
 	  } 
 	  else{
-		console.log(data);
+		
 		findThisParam(Campaign,"_id" , data._id, function(err,data){
 			if (err){
 				console.error(err);
 			}
 			else{
-				console.log("data from given restaturant");
-				console.log(data);
+				
 				res.json(data);
 			}
 		});
@@ -395,7 +417,7 @@ router.get('/transaction/:campaignID', function (req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log(data);
+			
 			var allTransactionsIDs = data.map(function(d){
 				if(d.transactionID) return d.transactionID;
 			});
@@ -427,8 +449,6 @@ router.post('/order/:campaignID/:userID', function(req,res,next){
 
 	var givenParam = req.params;
 	var dat = req.body;
-
-	console.log(dat);
 
 	var transactionData = {};
 	transactionData["time"] = new Date();
@@ -490,7 +510,7 @@ router.get('/orderByCampaignID/:campaignID', function (req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log(data);
+			
 			res.json(data);
 		}
 	});
@@ -507,8 +527,7 @@ router.get('/orderByUserID/:userID', function (req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log("group by campid");
-			console.log(data);
+			
 			res.json(data);
 		}
 	});
@@ -528,8 +547,7 @@ router.post('/account', function(req,res,next){
 			res.json(null);
 		}
 		else{
-			console.log("updated user");
-			console.log(data);
+			
 			createAndSave(Account,dat, function(err,order){
 				if (err){
 					res.json([]);
@@ -552,7 +570,7 @@ router.get('/account/:userID', function (req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log(data);
+			
 			res.json(data);
 		}
 	});
@@ -572,7 +590,7 @@ router.post('/user', function (req,res,next){
     	res.json(null);
     } 
     else{
-    	console.log(data);
+    	
     	res.json(data);
     }
 	});
@@ -589,7 +607,7 @@ router.get('/user/:userID', function (req,res,next){
 			console.error(err);
 		}
 		else{
-			console.log(data);
+			
 			res.json(data);
 		}
 	});
