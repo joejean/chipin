@@ -30,6 +30,7 @@
   </head>
   <body>
      {% block navbar %}
+     {% set active_page = active_page | default('index') %}
   
     <!-- Fixed navbar -->
     <nav class="navbar navbar-default navbar-fixed-top">
@@ -47,7 +48,7 @@
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav navbar-right">
-            <li class="active"><a href="/">Home</a></li>
+            <li{%if active_page == "index"%} class="active"{%endif%}><a href="/">Home</a></li>
             {% if isAuthenticated %}
               <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
@@ -60,7 +61,7 @@
             {% else %}
             <li><a href="/login">Login</a></li>
             {% endif%}
-            <li><a href="/contact">Contact</a></li>
+            <li {%if active_page == "contact"%}class="active"{%endif%}><a href="/contact">Contact</a></li>
           </ul>
         </div><!--/.nav-collapse -->
       </div>
