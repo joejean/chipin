@@ -202,8 +202,8 @@ router.get('/restaurant/:name', function(req,res,next){
 
 
 // return the restaurant with given name
-router.get('/restaurantByID/:id', function(req,res,next){
-
+router.route('/restaurantByID/:id')
+.get(function(req,res,next){
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
@@ -212,11 +212,36 @@ router.get('/restaurantByID/:id', function(req,res,next){
   	  	res.json(data);
 	  }
 	});
+})
+.put(function(req, res, next){
+	data = req.body;
+	Restaurant.update({_id:req.params.id}, {$set: {foodItems:data.foodItems}}, function(err){
+		if (err){
+			res.json({error:"Could not Save Menu Items"});
+		}
+		else{
+			res.json({success:"success"});
+		}
+	});
 });
+
 
 // Put and delete restaurant to/from database - the function does not check whether it comes
 // in the right format
 router.route('/restaurant') 
+.get(function(req,res,next){
+	var query = Restaurant.find({}).select('name');
+	query.exec(function(err, restaurants){
+		if (err){
+			res.json([]);
+		}
+		else{
+			res.json(restaurants);
+		}
+
+	});
+	
+})
 .post(function(req,res,next){
 	var dat = req.body;
 	createAndSave(Restaurant,dat, function(err,restaurant){
@@ -231,6 +256,15 @@ router.route('/restaurant')
 .delete(function(req,res,next){
 
 	var data = req.body;
+	Restaurant.remove({_id: data.id}, function(err){
+		if (err){
+			res.json({error:"Could not delete restaurant"});
+		}
+		else{
+			res.json({success:"success"});
+		}
+
+	});
 	
 
 });

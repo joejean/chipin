@@ -5,14 +5,27 @@
     <div class="container">
 
         <div class="col-md-6 col-md-offset-3">
+         <!-- This is not working for some reason -->
+          <!-- <div class="row">
+            <h2>Delete A Resataurant</h2>
+            <form>
+              <div class="form-group">
+                <label for="restaurant">Restaurant Name</label>
+                <select data-bind="options: restaurantList, value: selectedRestaurant" class="form-control" required>></select>
+                <a data-bind="click: delete" type="submit" class="btn btn-danger">Delete</a>
+              </div>
+            </form>
+         </div> 
+          
+          <hr>-->
           <h2>Add A Resataurant</h2>
-          <form id="restaurantForm">
+          <form>
             <div class="form-group">
               <label for="name">Restaurant Name</label>
               <input data-bind="value: name" type="text" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="form-group">
-              <label for="name">Image (link to a picture)</label>
+              <label for="image">Image (link to a picture)</label>
               <input data-bind="value: imageUrl" type="text" class="form-control" id="imageurl" placeholder="Url to an image for the restaurant">
             </div>
             <div class="form-group">
