@@ -18,6 +18,7 @@
     <link rel="stylesheet" type="text/css" href="/datePicker/lib/bootstrap-datepicker.css">
     <link rel="stylesheet" type="text/css" href="/datePicker/lib/pikaday.css">
     <link rel="stylesheet" type="text/css" href="/datePicker/lib/jquery.ptTimeSelect.css">
+    <link rel="stylesheet" type="text/css" href="/datePicker/lib/jquery.timepicker.css">
     <!-- <link rel="stylesheet" type="text/css" href="/datePicker/lib/site.css"> -->
 
 
@@ -52,17 +53,20 @@
             {% if isAuthenticated %}
               <li role="presentation" class="dropdown">
                 <a class="dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-expanded="false">
-                  <span class="glyphicon glyphicon-user"></span> <span class="caret"></span>
+                  <span class="glyphicon glyphicon-user"></span> {{user.name.split(" ")[0]}}<span class="caret"></span>
                 </a>
                 <ul class="dropdown-menu" role="menu">
-                    <li><a href="/logout">Logout</a></li>
                     <li><a href="/order">My Orders</a></li>
+                    <li><a href="/logout">Logout</a></li> 
                 </ul>
               </li>
             {% else %}
             <li><a href="/login">Login</a></li>
             {% endif%}
             <li {%if active_page == "contact"%}class="active"{%endif%}><a href="/contact">Contact</a></li>
+            {%if isAdmin%}
+            <li {%if active_page == "admin"%}class="active"{%endif%}><a href="/admin">Admin</a></li>
+            {%endif%}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

@@ -1,46 +1,42 @@
 {% extends "base.html" %}
+{% set active_page = 'manageRestaurant' %} 
 {% block content %}
 
     <div class="container">
 
         <div class="col-md-6 col-md-offset-3">
           <h2>Add A Resataurant</h2>
-          <form>
+          <form id="restaurantForm">
             <div class="form-group">
-              <label for="exampleInputPassword1">Restaurant Name</label>
-              <input type="text" class="form-control" id="name" placeholder="Name">
+              <label for="name">Restaurant Name</label>
+              <input data-bind="value: name" type="text" class="form-control" id="name" placeholder="Name">
             </div>
             <div class="form-group">
-              <label for="exampleInputPassword1">Phone</label>
-              <input type="text" class="form-control" id="phone" placeholder="Phone">
+              <label for="phone">Phone Number</label>
+              <input data-bind="value: phone" type="text" class="form-control" id="phone" placeholder="Phone">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Minimum Amount</label>
-              <input type="email" class="form-control" id="minamount" placeholder="Minimum Amount">
+              <label for="address">Address</label>
+              <input data-bind="value: address" type="text" class="form-control" id="address" placeholder="Address">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Wait Time (in minutes)</label>
-              <input type="email" class="form-control" id="waittime" placeholder="Wait Time">
+              <label for="minamount">Minimum Amount</label>
+              <input data-bind="value: minimumAmount" type="number" class="form-control" id="minamount" placeholder="Minimum Amount">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Start Time</label>
-              <input type="email" class="form-control" id="starttime" placeholder="Start Time">
+              <label for="waittime">Wait Time (in minutes)</label>
+              <input data-bind="value: waitTime" type="number" class="form-control" id="waittime" placeholder="Wait Time">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">End Time</label>
-              <input type="email" class="form-control" id="endtime" placeholder="End Time">
+              <label for="starttime">Start Time</label>
+              <input data-bind="value: startTime" type="text" class="form-control time ui-timepicker-input" id="starttime" placeholder="Start Time">
             </div>
             <div class="form-group">
-              <label for="exampleInputEmail1">Phone #</label>
-              <input type="email" class="form-control" id="phone" placeholder="phone #">
-            </div>
-            
-            <div class="form-group">
-              <label for="exampleInputEmail1">Your Message</label>
-              <textarea class="form-control" rows="3"></textarea>
+              <label for="endtime">End Time</label>
+              <input data-bind="value: endTime" type="text" class="form-control time ui-timepicker-input" id="endtime" placeholder="End Time">
             </div>
             
-            <button type="submit" class="btn btn-primary">Submit</button>
+            <button data-bind="click: save" type="submit" class="btn btn-primary">Submit</button>
           </form>
           
         </div>
@@ -50,3 +46,12 @@
   
 
 {% endblock %}
+
+{% block footer%}
+
+    {{super()}}
+    <script src="/js/adminRestaurantScript.js"></script>
+
+
+{% endblock %}
+

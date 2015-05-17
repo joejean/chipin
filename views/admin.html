@@ -1,0 +1,72 @@
+{%extends "base.html"%}
+{% set active_page = 'admin' %}
+
+{% block content %}
+
+    <div class="container">
+
+
+		<div class="row">
+			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+			      <div class="caption">
+			        <h3>Manage Campaigns</h3>
+			        <p>Here you can start a campaign. Delete or edit one.</p>
+			        <p><a href="/admin/campaign" class="btn btn-primary" role="button">Manage Campaign</a> </p>
+			      </div>
+			    </div>
+			</div>
+
+			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+			      <div class="caption">
+			        <h3>Manage Restaurants</h3>
+			        <p>Here you can add/edit/delete restaurants.</p>
+			        <p><a href="/admin/restaurant" class="btn btn-primary" role="button">Manage Restaurant</a> </p>
+			      </div>
+			    </div>
+			</div>
+
+			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+			      <div class="caption">
+			        <h3>Manage Admins</h3>
+			        <p>Here you can add new admins.</p>
+			        <p><a href="/admin/admin" class="btn btn-primary" role="button">Manage Admin</a> </p>
+			      </div>
+			    </div>
+			</div>
+			
+		</div>
+		
+		<div class="row">
+			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+			      <div class="caption">
+			        <h3>Manage Menus</h3>
+			        <p>Here you can add/edit/delete restaurant's menu Items.</p>
+			        <p><a href="/admin/campaign" class="btn btn-primary" role="button">Manage Menu</a> </p>
+			      </div>
+			    </div>
+			</div>
+
+			<div class="col-sm-6 col-md-4">
+			    <div class="thumbnail">
+			      <div class="caption">
+			        <h3>Manage Orders</h3>
+			        <p>Here you can see the orders for a given campaign.</p>
+			        <p><a href="/admin/restaurant" class="btn btn-primary" role="button">Manage Orders</a> </p>
+			      </div>
+			    </div>
+			</div>
+			
+		</div>
+		
+		
+
+	</div>
+
+
+{% endblock %}
+
+

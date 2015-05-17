@@ -32,13 +32,13 @@ function MenuViewModel() {
 	});
 
 	self.save = function(){
-		//TODO: modify this and add the correct endpoint
+		
 		var url = baseURL+"/api/order/"+campaignID+"/"+userID;
 		$.ajax(url, { 
 			data: ko.toJSON({order: self.orderedItems}),
 			type: 'post',
 			contentType: 'application/json', 
-			//TODO: Modify this to do something more meaningful upon successful post request
+			
 			success: function(result){ window.location = "/confirmation";}
 		});
 	};
@@ -60,7 +60,7 @@ function MenuViewModel() {
 
 $(document).ready(function(){
 
-	//ko.applyBindings(new UserViewModel(), document.getElementById("userInfo"));
+	
 
 	ko.applyBindings(new MenuViewModel(), document.getElementById("menu"));
 });
