@@ -217,7 +217,7 @@ router.get('/restaurantByID/:id', function(req,res,next){
 // Put and delete restaurant to/from database - the function does not check whether it comes
 // in the right format
 router.route('/restaurant') 
-.get(function(req,res,next){
+.post(function(req,res,next){
 	var dat = req.body;
 	createAndSave(Restaurant,dat, function(err,restaurant){
 		if (err){
