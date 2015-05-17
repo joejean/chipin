@@ -62,6 +62,9 @@
             <li><a href="/login">Login</a></li>
             {% endif%}
             <li {%if active_page == "contact"%}class="active"{%endif%}><a href="/contact">Contact</a></li>
+            {%if isAdmin%}
+            <li {%if active_page == "admin"%}class="active"{%endif%}><a href="/admin">Admin</a></li>
+            {%endif%}
           </ul>
         </div><!--/.nav-collapse -->
       </div>

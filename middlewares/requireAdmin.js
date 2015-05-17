@@ -21,6 +21,7 @@ function requireAdmin (req, res, next){
 	      	res.redirect("/");
 	      }
 	      else{
+	      	res.locals.isAdmin = true;
 	        next();
 	      }
 	      
