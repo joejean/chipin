@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+{% block content %}
+
+<div class="container">
+
+	
+
+
+	<div class="row" id="menu">
+		<div class="col-md-10 col-md-offset-1">
+			<h1 class="text-center"> <strong>Menu</strong></h1><br>
+
+		 	<div class="col-md-8">
+		 		<div class="well well-lg">
+		 			<p> <strong>Your order </strong></p>
+		 
+		 			<table class="table-no-border table-condensed table-responsive">
+		 			<thead>
+	  					<tr>
+	  						<th>#</th>
+	  						<th>Name</th>
+	  						<th>Price</th>
+	  					</tr>
+  					</thead>
+  					<tbody >
+  						{%for order in myOrder%}
+	  					<tr>
+	  						<td class="col-md-2">{{order.quantity}}</td>
+	  						<td class="col-md-8">{{order.foodName}}</td>
+	  						<td class="col-md-2">{{order.price}}</td>
+	  					</tr>
+						{% endfor %}
+						<tr>
+	  						<td class="col-md-2"><strong>Total</strong></td>
+	  						<td class="col-md-8"></td>
+	  						<td class="col-md-2"><strong>{{total}}</strong></td>
+	  					</tr>
+  					</tbody>
+					</table>
+		 		</div>
+		 			
+		 	</div>
+		 </div>
+			
+	</div>
+
+	
+
+</div>
+
+{% endblock %}

@@ -7,7 +7,9 @@ var orderSchema = new Schema({
 	campaignID: ObjectId,
 	userID: ObjectId,
 	foodID: ObjectId,
-	quantity: Number
+	foodName: String,
+	quantity: Number,
+	price: Number
 
 });
 

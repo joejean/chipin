@@ -402,6 +402,8 @@ router.post('/order/:campaignID/:userID', function(req,res,next){
 				orderObj["userID"] = thisUserID;
 				orderObj["foodID"] = d._id;
 				orderObj["quantity"] = d.quantity;
+				orderObj["foodName"] = d.name;
+				orderObj["price"] = d.price;
 				orderBalance += d.totalPrice;
 				return orderObj;
 			});
@@ -445,12 +447,12 @@ router.get('/orderByUserID/:userID', function (req,res,next){
 
 	var givenParam = req.params;
 	var myParam = {userID:givenParam.userID};
+
 	Order.find(myParam, function(err,data){
 		if (err){
 			console.error(err);
 		}
 		else{
-			console.log(data);
 			res.json(data);
 		}
 	});

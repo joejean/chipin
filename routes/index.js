@@ -191,6 +191,29 @@ router.get('/admin/campaign',requireAdmin, function(req,res){
 
 });
 
+router.get('/order', requireAuth, function(req,res){
+
+
+  var url = config.baseURL+"/api/orderByUserID/"+req.user._id;
+  console.log("calling orders");
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var myOrders = JSON.parse(body);
+
+    var totalPrice = 0;
+    myOrders.forEach(function(d){
+      totalPrice += d.price * d.quantity;
+    });
+
+    console.log(myOrders);
+    console.log(totalPrice);
+    res.render("order.html", {"myOrder":myOrders, "total":totalPrice});
+
+  });
+
+});
+
 
 router.get('/admin/restaurant',requireAdmin, function(req,res){
 
