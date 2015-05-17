@@ -14,6 +14,7 @@ var foodSchema = new Schema({
 
 var restaurantSchema = new Schema({
 	name: String, 
+	imageUrl: String,
 	address: String,
 	phone: String, 
 	minimumAmount: Number,

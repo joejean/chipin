@@ -214,9 +214,10 @@ router.get('/restaurantByID/:id', function(req,res,next){
 	});
 });
 
-// put restaurant in database - the function does not check whether it comes
+// Put and delete restaurant to/from database - the function does not check whether it comes
 // in the right format
-router.post('/restaurant', function(req,res,next){
+router.route('/restaurant') 
+.post(function(req,res,next){
 	var dat = req.body;
 	createAndSave(Restaurant,dat, function(err,restaurant){
 		if (err){
@@ -226,6 +227,12 @@ router.post('/restaurant', function(req,res,next){
 			res.json(restaurant);
 		}
 	});
+})
+.delete(function(req,res,next){
+
+	var data = req.body;
+	
+
 });
 
 // to replace get campaing by restaurant
