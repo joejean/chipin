@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container">
+    	<div class="col-md-12">
+    		<!-- header -->
+        	<div class="row">
+				<div class="col-md-6">
+					<h2>Restaurant</h2>
+				</div>
+				<div class="col-md-6">
+					<h2>Balance</h2>
+				</div>
+        	</div>
+
+        	<!-- content -->
+        	{% for item in campaigns %}
+
+        	<div class="jumbotron" id="jumbo">
+        		<div class="row">
+						<div class = "col-md-6">
+		    				<div id = "{{item._id}}">
+								<h1> <strong> {{ item.restaurant.name}} </strong></h1>
+								<h3> End: <strong> {{ item.endTime}}  </strong></h3>
+								<h3>Delivery: <strong> {{ item.deliveryTime}} </strong></h3>
+							</div>	
+						</div>
+
+					    <div class = "col-md-6">
+		    				<div id = "{{item._id}}">
+		    					{{item.balance}}/{{item.restaurant.minimumAmount}}
+
+							</div>	
+						</div>
+        		</div>
+        	</div>
+        	{% endfor %}
+
+    	</div>
+	</div>
+
+{% endblock %}
+

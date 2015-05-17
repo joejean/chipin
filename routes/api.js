@@ -97,6 +97,7 @@ function updateForeignData(model, foreignItem, keyParam, valParam, keyUpdate,cal
 }
 
 
+
 // --------------------- --------------------- --------------------- --------------------- //
 
 // ** Campaign specific funtions ** //
@@ -203,26 +204,12 @@ router.get('/restaurant/:name', function(req,res,next){
 // return the restaurant with given name
 router.get('/restaurantByID/:id', function(req,res,next){
 
-
 	findOneThisParam(Restaurant,"_id",req.params.id, function (err, data) {
 	  if (err) {
 	  	console.error(err);
 	  } 
 	  else{
-	  	console.log("in get rest");
-		console.log(data);
-		try{
-			data.foodItems.forEach( function(d,i,arr){
-				// var thisObj = JSON.parse(d);
-				// console.log(thisObj.name);
-				// data.foodItems[i] =  thisObj;
-				console.log(d);
-			});
-	  	  	res.json(data);
-	  	}
-	  	catch(err){
-	  		res.json([]);
-	  	}
+  	  	res.json(data);
 	  }
 	});
 });
@@ -269,7 +256,12 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 
 // get all campaigns an active campaign
 router.get('/campaign', function(req,res,next){
-	findThisParam(Campaign,"currentStatus" , "active", function(err,data){
+
+	Campaign.find({currentStatus:"active"}).
+	populate("restaurant").
+	sort({deliveryTime:'desc'}).
+	exec(function (err, data){
+	// findThisParam(Campaign,"currentStatus" , "active", function(err,data){
 		if (err){
 			console.error(err);
 		}
@@ -280,6 +272,7 @@ router.get('/campaign', function(req,res,next){
 		}
 	});
 });
+
 
 // put campaign in the database
 // {restaurantName: "restName", or restaurantID: "adf33xd"
@@ -453,6 +446,8 @@ router.get('/orderByUserID/:userID', function (req,res,next){
 			console.error(err);
 		}
 		else{
+			console.log("group by campid");
+			console.log(data);
 			res.json(data);
 		}
 	});
