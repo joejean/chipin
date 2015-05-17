@@ -317,13 +317,19 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 // notify all users of failing
 router.get('/pingCampaign',function(req,res,next){
 
-	Campaign.find().
-	where('endTime').gte(new Date()).
-	exec(function (err, data){
+	Campaign.
+	where('currentStatus', 'active').
+	where('endTime').lt(new Date()).
+	populate("restaurant").
+	exec(function (err, data) {
 		if (err){
 			console.error(err);
 		}
 		else{
+			if(data.length !== 0){
+				data.currentStatus.$set("expired");
+				data.save();	
+			}
 			res.json(data);
 		}
 	});

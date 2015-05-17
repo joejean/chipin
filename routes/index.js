@@ -199,12 +199,23 @@ router.get('/admin/campaign',requireAdmin, function(req,res){
       var nowTime = formatTime.formatAMPM(timeNow);
       var minTime = formatTime.formatAMPM(timeDeliver);
       var maxTime = restaurantList[i].endTime;
+      console.log(restaurantList[i].name);
+      console.log(formatTime.getTimeMinute(nowTime));
+      console.log(formatTime.getTimeMinute(restaurantList[i].startTime));
 
-      if (formatTime.getTimeMinute(nowTime) < formatTime.getTimeMinute(restaurantList[i].startTime)){
+      var minuteNow = formatTime.getTimeMinute(nowTime);
+      var minuteStart = formatTime.getTimeMinute(restaurantList[i].startTime);
+      var minuteEnd = formatTime.getTimeMinute(restaurantList[i].endTime);
+      if (minuteNow > minuteEnd){
        
         restaurantList[i]["minTime"] = "";
         restaurantList[i]["maxTime"] = ""; 
       }
+      else if ( minuteNow < minuteStart){
+        restaurantList[i]["minTime"] = restaurantList[i].startTime;
+        restaurantList[i]["maxTime"] = maxTime;
+
+      }      
       else{
         restaurantList[i]["minTime"] = minTime;
         restaurantList[i]["maxTime"] = maxTime;

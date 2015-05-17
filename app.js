@@ -17,11 +17,33 @@ var nunjucksDate = require('nunjucks-date');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
 require('coffee-script/register') // <-- This dependency is to be removed very soon.
 var attachBaseUrl = require("./middlewares/attachBaseUrl");
+var request = require('request');
 
 
 
 var app = express();
 
+setInterval(function(){ 
+
+  var url = config.baseURL+"/api/pingCampaign";
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var campaignList = JSON.parse(body);
+    campaignList.forEach(function(d,i){
+      console.log(d);
+
+      if (d.balance < d.restaurant.minimumAmount){
+        
+        console.log("campaign failed");
+      }
+      else{
+        console.log("campaign succeeded");
+      }
+    });
+  });
+
+}, 5000);
 
 // view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));
