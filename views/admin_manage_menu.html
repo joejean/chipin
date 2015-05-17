@@ -10,17 +10,17 @@
             <form>
               <div class="form-group">
                 <label for="restaurant">Restaurant Name</label>
-                <select data-bind="options: restaurantList, value: selectedRestaurant" class="form-control" required></select>
+                <select data-bind="options: restaurantList, value: selectedRestaurant, optionsText:'name'" class="form-control" required></select>
               </div>
             </form>
             <form class="form-inline">
               <div data-bind="foreach: menuItems">
                 <div class="form-group">
                   <label class="sr-onl" for="name">Name</label>
-                  <input data-bind="value: name" type="text" class="form-control" id="menuItemName" placeholder="Item Name">
+                  <input data-bind="value: name" type="text" class="form-control" id="menuItemName" placeholder="Item Name" required>
 
                   <label class="sr-onl" for="name">Price</label>
-                  <input data-bind="value: price" type="text" class="form-control" id="menuItemPrice" placeholder="Price">
+                  <input data-bind="value: price" type="text" class="form-control" id="menuItemPrice" placeholder="Price" required>
                   <a data-bind="click: $root.removeMenuItem" type="submit" class="btn btn-danger"><span class="glyphicon glyphicon-remove"></span></a> 
                 </div>
 
@@ -30,7 +30,7 @@
               
               <a data-bind="click: save" type="submit" class="pull-right btn btn-primary">Submit</a>
             </form>
-        <a data-bind="click: addMenuItem" type="submit" class="btn btn-info">More Menu Items</a>
+        <a data-bind="click: addMenuItem" type="submit" class="btn btn-info">Add 1 More Item</a>
 
           
         </div>

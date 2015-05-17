@@ -5,6 +5,13 @@ function MenuItem(name, price){
 	self.price = ko.observable(price);
 }
 
+function Restaurant(id, name){
+	var self = this;
+	self.id = id;
+	self.name = name;
+}
+
+
 
 //ViewModel for the menu page and initial state
 function MenuViewModel() {
@@ -13,19 +20,19 @@ function MenuViewModel() {
 	self.restaurantList = ko.observableArray([]);
 	self.selectedRestaurant = ko.observable();
 	self.menuItems = ko.observableArray([
-		new MenuItem("Test0", 56)
-		]);
+		new MenuItem("",0)
+	]);
 
 	//Operation
 	self.save = function(){
 		
-		var url = baseURL+"/api/order/"+campaignID+"/"+userID;
+		var url = baseURL+"/api/restaurantByID/"+self.selectedRestaurant().id;
 		$.ajax(url, { 
-			data: ko.toJSON({order: self.orderedItems}),
-			type: 'post',
+			data: ko.toJSON({foodItems: self.menuItems}),
+			type: 'put',
 			contentType: 'application/json', 
 			
-			success: function(result){ window.location = "/confirmation";}
+			success: function(result){ window.location = "/admin";}
 		});
 	}
 	self.addMenuItem = function(){
@@ -35,24 +42,17 @@ function MenuViewModel() {
 	self.removeMenuItem = function(menuItem){
 		self.menuItems.remove(menuItem);
 	}
-	/*var mappedData = $.map(foodItems, function(item){ return new MenuItem(item.name, item.price, item._id)});
-	self.menuItems(mappedData);*/
-
+	
 	//Load Initial Data to the menuItems
-	/*$.getJSON("/campaign", function(data){
-		var mappedData = $.map(data, function(item){ return new menuItem(item)});
-		self.menuItems(mappedData);
-	});*/
-
+	$.getJSON(baseURL+"/api/restaurant", function(data){
+		var mappedData = $.map(data, function(item){ return new Restaurant(item._id, item.name)});
+		self.restaurantList(mappedData);
+	});
 }
 
 
 
-
-
 $(document).ready(function(){
-
-	
 
 	ko.applyBindings(new MenuViewModel());
 });
