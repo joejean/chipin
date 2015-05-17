@@ -294,23 +294,23 @@ var foodAll = [
   },
   {
     "restName":"meowFood",
-    "name":" crispy tuna meow",
+    "name":"crispy tuna meow",
     "price":20,
-    "type":" main",
+    "type":"main",
     "description":"",
     "availableTime":""
   },
   {
     "restName":"meowFood",
-    "name":" fried fish bones",
+    "name":"fried fish bones",
     "price":5,
-    "type":" appetizer",
+    "type":"appetizer",
     "description":"",
     "availableTime":""
   },
   {
     "restName":"meowFood",
-    "name":" salmon milk sauce",
+    "name":"salmon milk sauce",
     "price":30,
     "type":" main",
     "description":"",
@@ -318,7 +318,7 @@ var foodAll = [
   },
   {
     "restName":"meowFood",
-    "name":" spaghetti yarn ball",
+    "name":"spaghetti yarn ball",
     "price":20,
     "type":" main",
     "description":"",
