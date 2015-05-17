@@ -10,6 +10,7 @@ function RestaurantViewModel() {
 	self.waitTime = ko.observable();
 	self.startTime = ko.observable();
 	self.endTime = ko.observable();
+	self.imageUrl = ko.observable();
 	self.foodItems = ko.observableArray([]);
 
 	self.save = function(){
@@ -24,6 +25,7 @@ function RestaurantViewModel() {
 				waitTime: self.waitTime,
 				startTime: self.startTime,
 				endTime: self.endTime,
+				imageUrl: self.imageUrl,
 				foodItems: self.foodItems
 			}),
 			type: 'post',
