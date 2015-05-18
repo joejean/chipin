@@ -153,6 +153,7 @@ function makeCampaignFromID(restaurantID,deliveryTime,callback){
 	});
 }
 
+
 // --------------------- --------------------- --------------------- --------------------- //
 
 // return all restaurants
@@ -543,19 +544,52 @@ router.get('/orderByCampaignID/:campaignID', function (req,res,next){
 // get all orders from a given userID
 router.get('/orderByUserID/:userID', function (req,res,next){
 
-	var givenParam = req.params;
-	var myParam = {userID:givenParam.userID};
+	function sortCampaignEndDate(a,b){
+	  if (a.campaign.deliveryTime < b.campaign.deliveryTime) {
+	    return -1;
+	  }
+	  if (a.campaign.deliveryTime > b.campaign.deliveryTime) {
+	    return 1;
+	  }
+	  // a must be equal to b
+	  return 0;
+	}
 
-	Order.find(myParam, function(err,data){
-		if (err){
-			console.error(err);
-		}
-		else{
-			
-			res.json(data);
-		}
+	// get user ID in the format of objectID - note creating ObjectID doesn't work
+	User.findOne({_id:req.params.userID}, function (err, data){
+        if(err) { console.log(err);callback(true); return; }
+		var userIDObj = data._id;
+		Order.
+		aggregate().
+		match({userID:userIDObj}).
+		// group by campaign IDs
+	    group({
+	            _id: { campaignID: "$campaignID"},
+	           	foodName: {$push: "$foodName"},
+	           	quantity: {$push: "$quantity"},
+				price: {$push: "$price"},
+	        }).
+	    exec( function (err, data) {
+	    	// join with campaign table
+	        if(err) { console.log(err);callback(true); return; }
+	        async.map(data, function(d,callback){
+	        	Campaign.findOne({_id:d._id.campaignID}).
+	        	populate("restaurant").
+				exec(function(err,camp){
+	        		d.campaign = camp;
+		        	callback(null,d);
+	        	});
+	        },function(err,results){
+	        	// sort according to date
+	        	results.sort(sortCampaignEndDate);
+	        	res.json(results);
+	        });
+
+	    });
 	});
+    
 });
+
 
 
 

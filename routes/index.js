@@ -238,14 +238,23 @@ router.get('/order', requireAuth, function(req,res){
   request(url, function(err, response, body) {
     // JSON body
     if(err) { console.log(err); return; }
-    var myOrders = JSON.parse(body);
+    var myOrdersAllCamp = JSON.parse(body);
+    var totalPrice = [];
 
-    var totalPrice = 0;
-    myOrders.forEach(function(d){
-      totalPrice += d.price * d.quantity;
+    myOrdersAllCamp.forEach(function(myOrders,i){
+      console.log(myOrders.campaign.restaurant);
+      // calc total price for the receipt
+      var total = 0;
+      myOrders.price.forEach(function(p,j){
+        var totalThisFood =  myOrders.price[j] * myOrders.quantity[j];
+        total += totalThisFood;
+        myOrders.price[j] = totalThisFood;
+      });
+      myOrdersAllCamp[i].totalPrice = total;
+      // get name
+      myOrdersAllCamp[i].restaurant  = myOrders.campaign.restaurant.name;
     });
-
-    res.render("order.html", {"myOrder":myOrders, "total":totalPrice});
+    res.render("order.html", {"myOrdersAllCamp":myOrdersAllCamp});
 
   });
 

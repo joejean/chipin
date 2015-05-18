@@ -10,9 +10,11 @@
 		<div class="col-md-10 col-md-offset-1">
 			<h1 class="text-center"> <strong>Menu</strong></h1><br>
 
+			{%for myOrder in myOrdersAllCamp%}
+
 		 	<div class="col-md-8">
 		 		<div class="well well-lg">
-		 			<p> <strong>Your order </strong></p>
+		 			<p> <strong>Your order @ {{myOrder.campaign.restaurant.name}} | {{myOrder.campaign.deliveryTime | date}} | status: {{myOrder.campaign.currentStatus}}</strong></p>
 		 
 		 			<table class="table-no-border table-condensed table-responsive">
 		 			<thead>
@@ -23,23 +25,25 @@
 	  					</tr>
   					</thead>
   					<tbody >
-  						{%for order in myOrder%}
+  						{%for order in myOrder.foodName%}
 	  					<tr>
-	  						<td class="col-md-2">{{order.quantity}}</td>
-	  						<td class="col-md-8">{{order.foodName}}</td>
-	  						<td class="col-md-2">{{order.price}}</td>
+	  						<td class="col-md-2">{{myOrder.quantity[loop.index0]}}</td>
+	  						<td class="col-md-8">{{myOrder.foodName[loop.index0]}}</td>
+	  						<td class="col-md-2">{{myOrder.price[loop.index0]}}</td>
 	  					</tr>
 						{% endfor %}
 						<tr>
 	  						<td class="col-md-2"><strong>Total</strong></td>
 	  						<td class="col-md-8"></td>
-	  						<td class="col-md-2"><strong>{{total}}</strong></td>
+	  						<td class="col-md-2"><strong>{{myOrder.totalPrice}}</strong></td>
 	  					</tr>
   					</tbody>
 					</table>
 		 		</div>
 		 			
 		 	</div>
+
+			{% endfor %}
 		 </div>
 			
 	</div>
