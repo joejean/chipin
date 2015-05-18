@@ -47,9 +47,28 @@ router.get("/", function(req, res, next){
 
 });
 
-router.get("/contact", function(req, res, next){
+router.route("/contact")
+.get(function(req, res, next){
+  res.render("contact.html", {"title":"Contact US"});
+})
+.post(function(req, res, next){
+  data = req.body;
+
+  config.transporter.sendMail({
+            from: data.email,
+            to: config.email,
+            subject: 'Chipin.ae | Email from '+data.name,
+            html: '<b>Phone Number:</b> '+data.phone+'<br><b>Email:</b> '+data.email+
+            '<br><b>Message:</b> '+data.message
+  }, function(err,info){
+
+    if (err){ console.log(err);}
+    
+  });
+
   res.render("contact.html", {"title":"Contact US"});
 });
+
 
 router.get("/participantHome", requireAuth, requireUpdatedProfile, function(req, res, next){
   res.render("participant_home.html", {"title":"Home"});

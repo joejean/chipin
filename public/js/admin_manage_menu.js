@@ -28,7 +28,7 @@ function MenuViewModel() {
 		
 		var url = baseURL+"/api/restaurantByID/"+self.selectedRestaurant().id;
 		$.ajax(url, { 
-			data: ko.toJSON({foodItems: self.menuItems}),
+			data: ko.toJSON(self.menuItems),
 			type: 'put',
 			contentType: 'application/json', 
 			

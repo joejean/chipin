@@ -238,7 +238,7 @@ router.route('/restaurantByID/:id')
 })
 .put(function(req, res, next){
 	data = req.body;
-	Restaurant.update({_id:req.params.id}, {$addToSet: {foodItems: {$each: data.foodItems} }}, function(err){
+	Restaurant.update({_id:req.params.id}, {$addToSet: {foodItems: {$each: data} }}, function(err){
 		if (err){
 			res.json({error:"Could not Save Menu Items"});
 		}
@@ -349,8 +349,13 @@ router.get('/pingCampaign',function(req,res,next){
 		}
 		else{
 			if(data.length !== 0){
-				data.currentStatus.$set("expired");
-				data.save();	
+				Campaign.findOne({_id:data[0].id},function(err,campaign){
+					campaign.currentStatus="expired";
+					campaign.save();
+
+				});
+				
+				
 			}
 			res.json(data);
 		}
