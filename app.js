@@ -3,6 +3,7 @@ var path = require('path');
 var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
+var flash = require('connect-flash');
 var bodyParser = require('body-parser');
 var mongoose = require("mongoose");
 var passport = require("passport");
@@ -15,7 +16,6 @@ var config = require("./config");
 var index = require('./routes/index');
 var nunjucksDate = require('nunjucks-date');
 var attachAuthenticationStatus = require("./middlewares/attachAuthenticationStatus");
-require('coffee-script/register') // <-- This dependency is to be removed very soon.
 var attachBaseUrl = require("./middlewares/attachBaseUrl");
 var request = require('request');
 
@@ -23,6 +23,9 @@ var request = require('request');
 
 var app = express();
 
+/*Nodemailer Configuration*/
+
+/*Function that pings an API endpoint to check when a campaign expires or fails*/
 setInterval(function(){ 
 
   var url = config.baseURL+"/api/pingCampaign";
@@ -30,20 +33,29 @@ setInterval(function(){
     // JSON body
     if(err) { console.log(err); return; }
     var campaignList = JSON.parse(body);
-    campaignList.forEach(function(d,i){
-      console.log(d);
+    campaignList.forEach(function(campaign,i){
+      
 
-      if (d.balance < d.restaurant.minimumAmount){
-        
-        console.log("campaign failed");
+      if (campaign.balance < campaign.restaurant.minimumAmount){
+        config.transporter.sendMail({
+            from: 'nyuadchipin@gmail.com',
+            to: config.email,
+            subject: 'Campaign '+campaign.restaurant.name+' FAILED',
+            text: 'Hi, the Campaign '+campaign.restaurant.name+' FAILED!'
+        });
       }
       else{
-        console.log("campaign succeeded");
+        config.transporter.sendMail({
+            from: 'nyuadchipin@gmail.com',
+            to: config.email,
+            subject: 'Campaign '+campaign.restaurant.name+' SUCCEEDED!',
+            text: 'Hi, the Campaign '+campaign.restaurant.name+' SUCCEEDED!'
+        });
       }
     });
   });
 
-}, 5000);
+}, 120000);
 
 // view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));
@@ -81,11 +93,18 @@ app.use(expressSession( {
     resave: false,
     saveUninitialized: true 
 } ));
+app.use(flash());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(attachAuthenticationStatus);
 app.use(attachBaseUrl);
+//Add flash message to all the views
+app.use(function (req, res, next){
+  res.locals.sucess_messages = req.flash('sucess_messages');
+  res.locals.error_messages =  req.flash('error_messages');
+  next();
+});
 
 //Our Routes
 app.use('/', index);

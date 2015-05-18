@@ -73,6 +73,33 @@
     </nav>
     {% endblock %}
 
+  {% block flashMessages %}
+    {% if (error_messages.length > 0) %}
+
+      <div class="container">
+        <div class="row">
+          <div class="alert alert-warning alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Error!</strong> {{error_messages}}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+
+    {% if (success_messages.length > 0) %}
+      <div class="container">
+        <div class="row">
+          <div class="alert alert-success alert-dismissible" role="alert">
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <strong>Success!</strong> {{success_messages}}
+          </div>
+        </div>
+      </div>
+    {% endif %}
+      
+  {% endblock %}
+
+
   {% block content %}
   
   {% endblock %}
