@@ -4,7 +4,7 @@ var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var orderSchema = new Schema({
 	transactionID: ObjectId,
-	campaignID: ObjectId,
+	campaignID: {type: ObjectId, ref:"Campaign"},
 	userID: ObjectId,
 	foodID: ObjectId,
 	foodName: String,
