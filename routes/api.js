@@ -223,8 +223,6 @@ router.route('/admin')
 });
 
 
-
-
 // return the restaurant with given name
 router.route('/restaurantByID/:id')
 .get(function(req,res,next){
@@ -262,9 +260,7 @@ router.route('/restaurant')
 		else{
 			res.json(restaurants);
 		}
-
 	});
-	
 })
 .post(function(req,res,next){
 	var dat = req.body;

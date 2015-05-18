@@ -300,6 +300,19 @@ router.get('/admin/viewOrders/:campaignID',requireAdmin, function(req,res){
     if(err) { console.log(err); return; }
     var data = JSON.parse(body);
     console.log(data);
+
+    data.orderByUser.forEach(function(myOrders,i){
+      // calc total price for the receipt
+      var total = 0;
+      myOrders.price.forEach(function(p,j){
+        var totalThisFood =  myOrders.price[j] * myOrders.quantity[j];
+        total += totalThisFood;
+        myOrders.price[j] = totalThisFood;
+      });
+      data.orderByUser[i].totalPrice = total;
+    });
+
+
     res.render("admin_view_orders.html", {"title":"View Orders","orderListByUser":data.orderByUser, "campaign": data.campaign})
   });
 });
