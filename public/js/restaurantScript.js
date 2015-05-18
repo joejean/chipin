@@ -44,14 +44,9 @@ $("input[id^='submit']").click(function(){
 		return;
 	}
 
-	console.log(valDate);
-	console.log(valTime);
 
-	console.log(res);
 	var url = baseURL+"/api/campaign/";
-	console.log(url);
 	var newDate = new Date();
-	console.log(newDate.getTime());
 	$.ajax(url, { 
 		data: JSON.stringify({restaurantID: res[1], rawDate: valDate, rawTime : valTime}),
 		type: 'POST',

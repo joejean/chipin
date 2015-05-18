@@ -260,6 +260,31 @@ router.get('/order', requireAuth, function(req,res){
 
 });
 
+router.get('/admin/orderByCampaign',requireAdmin, function(req,res){
+
+  var url = config.baseURL+"/api/campaign";
+  console.log("calling all active campaigns");
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var campaignList = JSON.parse(body);
+    res.render("admin_manage_orders.html", {"title":"Manage Orders","campaigns":campaignList})
+  });
+});
+
+router.get('/admin/viewOrders/:campaignID',requireAdmin, function(req,res){
+
+  var campaignID = req.params.campaignID;
+  var url = config.baseURL+"/api/orderByCampaignID/"+campaignID;
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var data = JSON.parse(body);
+    console.log(data);
+    res.render("admin_view_orders.html", {"title":"View Orders","orderListByUser":data.orderByUser, "campaign": data.campaign})
+  });
+});
+
 
 router.get('/admin/restaurant',requireAdmin, function(req,res){
 

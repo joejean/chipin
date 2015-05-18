@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="container">
+    	<div class="col-md-12">
+
+        	<!-- content -->
+        	{% for item in campaigns %}
+
+        	<div class="jumbotron" id="jumbo">
+        		<div class="row">
+						<div class = "col-md-6">
+		    				<div id = "{{item._id}}">
+								<h1> <strong> {{ item.restaurant.name}} </strong></h1>
+								<h3> End: <strong> {{ item.endTime | date}}  </strong></h3>
+								<h3>Delivery: <strong> {{ item.deliveryTime | date}} </strong></h3>
+							</div>	
+						</div>
+
+						<div class="col-md-6">
+
+							<br>
+							{% if (item.restaurant.minimumAmount - item.balance) <= 0  %}
+							<h1> Delivery guaranteed! </h1>
+							{% else %}
+							<h1> {{item.restaurant.minimumAmount - item.balance }} dhs to go</h1>
+							{% endif %}
+							<div id = "countdown-{{item.endTime}}"></div>
+							<a id = "checkOrder-{{item._id}}" class="btn btn-primary btn-lg btn-block"
+							href="/admin/viewOrders/{{item._id}}">Check Orders</a>
+							
+						</div>
+        		</div>
+        	</div>
+
+        	{% endfor %}
+
+    	</div>
+	</div>
+
+{% endblock %}
+

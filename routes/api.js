@@ -528,17 +528,53 @@ router.post('/order/:campaignID/:userID', function(req,res,next){
 // get all orders from a given campaign id
 router.get('/orderByCampaignID/:campaignID', function (req,res,next){
 
-	var givenParam = req.params;
-	var myParam = {campaignID:givenParam.campaignID};
-	Order.find(myParam, function(err,data){
-		if (err){
-			console.error(err);
-		}
-		else{
-			
-			res.json(data);
-		}
+	var thisCamp;
+	Campaign.findOne({_id:req.params.campaignID}).
+      	populate("restaurant").
+		exec( function (err, data){
+        if(err) { console.log(err);callback(true); return; }
+		var campaignIDObj = data._id;
+		thisCamp = data;
+		// console.log("found campgain");
+		// console.log(data);
+		
+
+		Order.
+		aggregate().
+		match({campaignID:campaignIDObj}).
+		// group by user IDs
+	    group({
+	            _id: { userID: "$userID"},
+	           	foodName: {$push: "$foodName"},
+	           	quantity: {$push: "$quantity"},
+				price: {$push: "$price"},
+	        }).
+	    exec( function (err, data) {
+	    	// console.log("order from this campgain");
+	    	// console.log(data);
+	    	// join with campaign table
+	        if(err) { console.log(err);callback(true); return; }
+	        async.map(data, function(d,callback){
+	        	User.findOne({_id:d._id.userID}).
+				exec(function(err,usr){
+					// console.log(usr);
+	        		d.user = usr;
+		        	callback(null,d);
+	        	});
+	        },function(err,results){
+	        	// sort according to date
+	        	// results.sort(sortCampaignEndDate);
+	        	// console.log("final result");
+	        	// console.log(results);
+	        	var data = {campaign:thisCamp, orderByUser:results};
+	        	console.log("in api");
+	        	console.log(data);
+	        	res.json(data);
+	        });
+
+	    });
 	});
+
 });
 
 // get all orders from a given userID
