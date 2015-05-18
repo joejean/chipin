@@ -339,7 +339,6 @@ router.get('/campaign/:restaurantName', function(req,res,next){
 // notify admin of succeeding
 // notify all users of failing
 router.get('/pingCampaign',function(req,res,next){
-
 	Campaign.
 	where('currentStatus', 'active').
 	where('endTime').lt(new Date()).
@@ -350,18 +349,14 @@ router.get('/pingCampaign',function(req,res,next){
 		}
 		else{
 			if(data.length !== 0){
-				Campaign.findOne({_id:data[0].id},function(err,campaign){
-					campaign.currentStatus="expired";
-					campaign.save();
-
+				data.forEach(campaign, function(d){
+					d.currentStatus="expired";
+					d.save();
 				});
-				
-				
 			}
 			res.json(data);
 		}
 	});
-
 });
 
 
