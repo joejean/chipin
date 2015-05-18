@@ -37,25 +37,25 @@ setInterval(function(){
       
 
       if (campaign.balance < campaign.restaurant.minimumAmount){
-       /* config.transporter.sendMail({
+        config.transporter.sendMail({
             from: 'nyuadchipin@gmail.com',
-            to: 'coolchanteur@gmail.com',
-            subject: 'Campaign '+campaign.restaurant.name+' failed',
-            text: 'Hi, the Campaign '+campaign.restaurant.name+' failed!'
-        });*/
+            to: config.email,
+            subject: 'Campaign '+campaign.restaurant.name+' FAILED',
+            text: 'Hi, the Campaign '+campaign.restaurant.name+' FAILED!'
+        });
       }
       else{
-      /*  config.transporter.sendMail({
+        config.transporter.sendMail({
             from: 'nyuadchipin@gmail.com',
-            to: 'coolchanteur@gmail.com',
+            to: config.email,
             subject: 'Campaign '+campaign.restaurant.name+' SUCCEEDED!',
             text: 'Hi, the Campaign '+campaign.restaurant.name+' SUCCEEDED!'
-        });*/
+        });
       }
     });
   });
 
-}, 5000);
+}, 120000);
 
 // view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));
