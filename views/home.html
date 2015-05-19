@@ -16,9 +16,9 @@
 			    				<h1><img src="{{item.restaurant.imageUrl}}" class="img-responsive img-rounded"></h1>
 							</div>
 
-							<div class = "col-md-4">
+							<div class = "col-md-4" id = "{{item._id}}">
 			    				<div id = "{{item._id}}">
-									<h1> <strong> {{ item.restaurant.name | upper}} </strong></h1>
+									<h1> <strong> {{ item.restaurant.name | capitalize}} </strong></h1>
 									<h4> End: <strong> {{ item.endTime | date}}  </strong></h4>
 									<h4>Delivery: <strong> {{ item.deliveryTime | date}} </strong></h4>
 								</div>	
@@ -26,7 +26,6 @@
 
 							<div class="col-md-4">
 
-								<br>
 								{% if (item.restaurant.minimumAmount - item.balance) <= 0  %}
 								<h2 class="text-center"> Delivery guaranteed! </h2>
 								{% else %}

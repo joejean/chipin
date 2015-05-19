@@ -8,6 +8,7 @@ mongoose.connect(config.db.uri);
 var Restaurant = require('../models/restaurant').restaurantModel;
 var Food = require('../models/restaurant').foodModel;
 var Campaign = require('../models/campaign');
+var Admin = require('../models/admin');
 
 
 
@@ -112,6 +113,20 @@ function createOneToyCampaign(){
 
 }
 
+/*var admins = [
+  {"name":"Joe Jean", "email":"jj1347@nyu.edu"},
+  {"name":"Rock Zou", "email":"jj1347@nyu.edu"},
+  {"name":"Jerome White", "email":"jj1347@nyu.edu"},
+  {"name":"Mick", "email":"jj1347@nyu.edu"},
+]*/
+
+function addAdmin() {
+  var admin = new Admin({name:'Joe Jean', email:"jj1347@nyu.edu"});
+  admin.save(function(err){
+    if (err) console.log(err);
+  });
+}
+
 //  DATA //
 
 // to convert csv to json - http://www.convertcsv.com/csv-to-json.htm
@@ -124,7 +139,8 @@ var restaurantAll = [
     "minimumAmount":100,
     "waitTime":30,
     "startTime":"5:00pm",
-    "endTime":"9:00pm"
+    "endTime":"9:00pm",
+    "imageUrl": "http://graphics8.nytimes.com/images/2013/11/22/business/dbpix-darden/dbpix-darden-tmagArticle.jpg"
   },
   {
     "name":"lebanese flower",
@@ -133,7 +149,8 @@ var restaurantAll = [
     "minimumAmount":120,
     "waitTime":40,
     "startTime":"1:00pm",
-    "endTime":"11:00pm"
+    "endTime":"11:00pm",
+    "imageUrl": "http://www.bighospitality.co.uk/var/plain_site/storage/images/publications/hospitality/bighospitality.co.uk/business/tortilla-secures-seven-sites-for-restaurants-inside-and-outside-london/8401879-1-eng-GB/Tortilla-secures-seven-sites-for-restaurants-inside-and-outside-London_medium_vga.jpg"
   },
   {
     "name":"alkram",
@@ -142,7 +159,8 @@ var restaurantAll = [
     "minimumAmount":100,
     "waitTime":30,
     "startTime":"4:00pm",
-    "endTime":"7:00pm"
+    "endTime":"7:00pm",
+    "imageUrl": "http://media-cdn.tripadvisor.com/media/photo-s/01/71/5f/b8/outside-of-the-restaurant.jpg"
   },
   {
     "name":"meowFood",
@@ -151,7 +169,8 @@ var restaurantAll = [
     "minimumAmount":100,
     "waitTime":40,
     "startTime":"8:00pm",
-    "endTime":"9:00pm"
+    "endTime":"9:00pm",
+    "imageUrl": "https://geekalabama.files.wordpress.com/2012/06/2012-06-20-19-25-31-2.jpg"
   }
 ]
 
@@ -341,9 +360,10 @@ async.forEach(restaurantAll, populateDB.bind(populateDB, Restaurant), function(e
       createOneToyCampaign();
 
 
+
     }
 });
 
-
+addAdmin();
 
 
