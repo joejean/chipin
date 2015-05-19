@@ -41,9 +41,9 @@
 
 		        		{% if item.maxTime %}
 		        		<h2> Start {{ item.name}} campaign </h2>
-		        		<label for="Date">Campaign End Date:</label>
+		        		<label for="Date">Delivery Date:</label>
 						<input id="selectDate{{item._id}}" type="text"  autocomplete="off">
-						<label for="Time">Campaign End Time:</label>
+						<label for="Time">Time:</label>
 						<input id="selectTime{{item._id}}" minTime = "{{item.minTime}}" maxTime= "{{item.maxTime}}" type="text" class="time ui-timepicker-input" autocomplete="off">
 
 						<input id="submit{{item._id}}"  type="submit" value="Submit">
