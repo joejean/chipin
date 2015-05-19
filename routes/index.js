@@ -195,7 +195,6 @@ router.get('/admin',requireAdmin, function(req,res){
 router.get('/admin/campaign',requireAdmin, function(req,res){
   
   var url = config.baseURL+"/api/allRestaurant";
-  console.log("calling restaurant");
   request(url, function(err, response, body) {
     // JSON body
     if(err) { console.log(err); return; }

@@ -346,7 +346,12 @@ router.get('/pingCampaign',function(req,res,next){
 		else{
 			if(data.length !== 0){
 				data.forEach(function(campaign){
-					campaign.currentStatus="expired";
+					if (campaign.balance < campaign.restaurant.minimumAmount){
+						campaign.currentStatus = "failed";
+					}
+					else{
+						campaign.currentStatus = "succeeded";
+					}
 					campaign.save();
 				});
 			}
@@ -612,7 +617,16 @@ router.get('/orderByUserID/:userID', function (req,res,next){
 	        	});
 	        },function(err,results){
 	        	// sort according to date
+	        	var date = new Date();
+	        	date.setDate(date.getDate() - 1);
+
+	        	// remove old campaigns from yesterday
+	        	results.filter(function(d,i){
+	        		if (d.campaign.deliveryTime >= date) return d;
+	        	});
+
 	        	results.sort(sortCampaignEndDate);
+
 	        	res.json(results);
 	        });
 

@@ -55,7 +55,7 @@ $("input[id^='submit']").click(function(){
 		//TODO: Modify this to do something more meaningful upon successful post request
 		success: function(result){ 
 			console.log(result);
-			// window.location = "/confirmation";
+			window.location = "/";
 		}
 	});
 });
