@@ -55,7 +55,7 @@ setInterval(function(){
     });
   });
 
-}, 120000);
+}, 5000);
 
 // view engine-nunjucks- setup
 app.set('views', path.join(__dirname, 'views'));

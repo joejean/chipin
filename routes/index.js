@@ -14,7 +14,7 @@ var formatTime = require('../lib/formatTime');
 
 
 /*User Interface Routes*/
-router.get("/", function(req, res, next){
+/*router.get("/", function(req, res, next){
   var campaign;
   var restaurant;
   async.waterfall([
@@ -45,7 +45,23 @@ router.get("/", function(req, res, next){
    res.render("home.html", {"title":"Home", "campaign": campaign, "restaurant": result});   
   });
 
+});*/
+
+router.get('/', function(req,res){
+
+
+  var url = config.baseURL+"/api/campaign";
+  request(url, function(err, response, body) {
+    // JSON body
+    if(err) { console.log(err); return; }
+    var campaignList = JSON.parse(body);
+
+
+    res.render("home.html", {"title":"Home", "campaigns":campaignList});
+
+  });
 });
+
 
 router.route("/contact")
 .get(function(req, res, next){
@@ -139,24 +155,6 @@ router.get("/menu/:restaurantID",requireAuth, requireUpdatedProfile, function(re
   });
 
 });
-
-router.get('/campaign', function(req,res){
-
-
-  var url = config.baseURL+"/api/campaign";
-  console.log("calling all active campaigns");
-  request(url, function(err, response, body) {
-    // JSON body
-    if(err) { console.log(err); return; }
-    var campaignList = JSON.parse(body);
-
-
-    res.render("campaign.html", {"title":"Campaign", "campaigns":campaignList});
-
-  });
-});
-
-
 
 //*** Route Handlers for Login and Logout****//
 router.get('/login',function(req, res){

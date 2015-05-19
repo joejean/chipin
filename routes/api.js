@@ -345,16 +345,15 @@ router.get('/pingCampaign',function(req,res,next){
 		}
 		else{
 			if(data.length !== 0){
-				data.forEach(campaign, function(d){
-					d.currentStatus="expired";
-					d.save();
+				data.forEach(function(campaign){
+					campaign.currentStatus="expired";
+					campaign.save();
 				});
 			}
 			res.json(data);
 		}
 	});
 });
-
 
 // get all campaigns an active campaign
 router.get('/campaign', function(req,res,next){

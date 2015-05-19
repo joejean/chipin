@@ -21,8 +21,8 @@ var restaurantSchema = new Schema({
 	waitTime: Number,
 	startTime: String,
 	endTime: String,
-	foodItems: [foodSchema],
-	imgURL: String
+	foodItems: [foodSchema]
+	
 
 });
 
