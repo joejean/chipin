@@ -4,48 +4,24 @@
 <div class="container">
 
 	<div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			<h1 class="text-center"> <strong>Thank you for ordering {{user.name}}</strong></h1> <br>
+		<div class="col-md-12">
+			<h1 class="text-center"> <strong>Thank you for your order {{user.name.split(' ')[0]}}</strong></h1> <br>
 
-		 	<!-- <div class="col-md-6">
-		 		<div class="well well-lg">
-		 			<p> <strong>Your order </strong></p>
-		 			<ul class="list-unstyled">
-		 			<li>2 Chicken and Rice <span class="pull-right">50</span></li>
-		 			</ul>
-		 			
-		 			<hr>
-		 			<strong>Total <span class="pull-right">50</span></strong>
-		 			</p>
-
-		 		</div>
-		 	</div> -->
-
-		 	<!-- <div class="col-md-6"> -->
+		 	
 		 		<h3> Your delivery Information: </h3>
 		 	    <p> <strong> Day: {{campaign.deliveryTime |date}} </strong></p>
 				<p> <strong> Time: {{campaign.deliveryTime |date}} </strong></p>
+				<p><strong> Building: <span class="label label-default">{{user.buildingNo}}</span></strong></p>
 				<p><strong> Room: <span class="label label-default">{{user.roomNo}}</span></strong></p>
-		 	<!-- </div> -->
+				<div class="alert alert-warning">
+					<p>If your room number and building number are not up to date, please <a href="/userInfo">Click here</a> to update them.</p>
+				</div>
+		 
 			
 		</div>
 	</div>
 
-	<!-- <div class="row">
-		<div class="col-md-8 col-md-offset-2">
-			
-		 	<div class="col-md-6">
-		 		<a class="btn btn-default btn-lg" href="">Back</a>
-		 	</div>
 
-		 	<div class="col-md-6">
-
-		 		<a class="btn btn-primary btn-lg" href="">Place Order</a>
-		 		
-		 	</div>
-			
-		</div>
-	</div> -->
 
 </div>
 

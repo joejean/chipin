@@ -14,38 +14,6 @@ var formatTime = require('../lib/formatTime');
 
 
 /*User Interface Routes*/
-/*router.get("/", function(req, res, next){
-  var campaign;
-  var restaurant;
-  async.waterfall([
-    function(callback){
-      var url = config.baseURL+"/api/campaign";
-      request(url, function(err, response, body) {
-        // JSON body
-        if(err) { console.log(err);callback(true); return; }
-        campaign = JSON.parse(body)[0];
-        callback(null, campaign.restaurant._id);
-        
-      });
-      
-    },
-    function(restaurant, callback){
-      var url = config.baseURL+"/api/restaurantByID/"+restaurant;
-      request(url, function(err, response, body) {
-        // JSON body
-        if(err) { console.log(err); callback(true); return; }
-        restaurant = JSON.parse(body);
-        callback(null, restaurant);
-      });  
-    }
-  ],
-  function (err, result) {
-   if(err) { console.log(err); res.send(500,"Server Error"); return; }
-
-   res.render("home.html", {"title":"Home", "campaign": campaign, "restaurant": result});   
-  });
-
-});*/
 
 router.get('/', function(req,res){
 
@@ -270,7 +238,7 @@ router.get('/order', requireAuth, function(req,res){
       // get name
       myOrdersAllCamp[i].restaurant  = myOrders.campaign.restaurant.name;
     });
-    res.render("order.html", {"myOrdersAllCamp":myOrdersAllCamp});
+    res.render("order.html", {"myOrdersAllCamp":myOrdersAllCamp, "title":"My Orders"});
 
   });
 
