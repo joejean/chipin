@@ -4,11 +4,6 @@ config.db = {};
 config.session = {};
 config.google = {};
 
-
-
-
-
-
 /*Check If app is running in production or development*/
 if(process.env.NODE_ENV ==="production"){
 
@@ -16,6 +11,10 @@ if(process.env.NODE_ENV ==="production"){
 	config.db.uri = process.env.MONGOLAB_URI;
 	config.email = process.env.email;
 	config.password = process.env.password;
+	/* Google Oauth & Session*/
+	config.session.secret = process.env.SESSIONSECRET;
+	config.google.clientID = process.env.GOOGLE_CLIENT_ID;
+	config.google.clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 
 }
 else{
@@ -24,6 +23,10 @@ else{
 	config.db.uri = "mongodb://localhost/chipin";
 	config.email = "chipinae@gmail.com";
 	config.password = "chipinae12345";
+	/* Google Oauth & Session*/
+	config.session.secret = "\x06\xe9\xc2\xefE\xbc3#\x9d)m\x9eX\xe8\xa1\xb2\xb5N\\y";
+	config.google.clientID = "807422291056-dbev3t9upuc18h0s7nkebree18jcp5o1.apps.googleusercontent.com";
+	config.google.clientSecret = "ZEoPMsozoKtfFDvbEZIj0cxt";
 }
 
 /*Config for Email*/
@@ -34,11 +37,6 @@ config.transporter = nodemailer.createTransport({
 		pass: config.password
 	}
 });
-
-/* Google Oauth & Session*/
-config.session.secret = "\xc9\xe7\xfb\xf2\xe9~o\xa1\xe0\xd9\x15\t\xacNe\xe0bI0a6\xd7";
-config.google.clientID = "891538322317-63tvts0nv9q8ugllikm353emhn9n8cav.apps.googleusercontent.com";
-config.google.clientSecret = "obTzQm81YJhVmzpKHH3tjEzZ";
 
 
 module.exports = config;
